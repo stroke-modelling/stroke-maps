@@ -1,7 +1,8 @@
-name: simpy
+name: stroke_maps_dev
 channels:
   - defaults
 dependencies:
+  - geopandas
   - joblib
   - jupyter
   - jupyterlab
@@ -10,10 +11,9 @@ dependencies:
   - pandas
   - pip
   - pytest
-  - python=3.10
+  - python>3.10
   - scipy
+  - shapely
   - pip:
-    - stroke-outcome
-    - simpy==4.0
     - stroke-outcome
 
