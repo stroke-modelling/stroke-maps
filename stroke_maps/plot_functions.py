@@ -9,7 +9,7 @@ from PIL import ImageFont
 from matplotlib import font_manager
 
 import numpy as np
-from classes.utils import find_multiindex_column_names
+from stroke_maps.utils import find_multiindex_column_names
 
 
 # ###################

@@ -54,7 +54,7 @@ def convert_df_to_gdf(df):
     """
     df = df.copy()
     # Find the intended geometry column in the "property" column level:
-    col = find_multiindex_column_names(df, property='geometry')
+    col = find_multiindex_column_names(df, property=['geometry'])
     try:
         gdf = geopandas.GeoDataFrame(
             df,

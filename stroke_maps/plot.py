@@ -12,8 +12,8 @@ from shapely.geometry import Polygon  # For extent box.
 import geopandas
 import numpy as np
 
-import classes.plot_functions as maps  # for plotting.
-from classes.utils import find_multiindex_column_names
+import stroke_maps.plot_functions as maps  # for plotting.
+from stroke_maps.utils import find_multiindex_column_names
 
 
 # ##########################

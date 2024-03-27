@@ -14,7 +14,7 @@ from importlib_resources import files
 
 from shapely import LineString  # For creating line geometry.
 from pandas.api.types import is_numeric_dtype  # For checking dtype.
-from classes.utils import find_multiindex_column_names
+from stroke_maps.utils import find_multiindex_column_names
 
 
 # #####################
@@ -58,7 +58,7 @@ def import_geojson(region_type: 'str'):
     # Import region file:
     file_input = geojson_file_dict[region_type]
     # Relative import from package files:
-    path_to_file = files('stroke_maps.data_geojson').joinpath(file_input)
+    path_to_file = files('stroke_maps.data').joinpath(file_input)
     gdf_boundaries = geopandas.read_file(path_to_file)
 
     if region_type == 'LSOA11NM':

@@ -469,8 +469,6 @@ class Catchment(object):
         # Relative import from package files:
         path_to_file = files('stroke_maps.data').joinpath(
             'regions_lsoa_ew.csv')
-        # Load and parse unit data:
-        path_to_file = './data/regions_lsoa_ew.csv'
         df_lsoa = pd.read_csv(path_to_file)
         # Columns: [lsoa, lsoa_code, region_code, region, region_type,
         #           icb_code, icb, isdn]

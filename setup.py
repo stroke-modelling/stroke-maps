@@ -27,7 +27,7 @@ setuptools.setup(
     # if true look in MANIFEST.in for data files to include
     include_package_data=True,
     # 2nd approach to include data is include_package_data=False
-    package_data={"stroke_maps": ["data/*.csv", "data_geojson/*.csv"]},
+    package_data={"stroke_maps": ["data/*.csv", "data/*.geojson"]},
     # these are for PyPi documentation
     classifiers=[
         "Programming Language :: Python :: 3.8",
