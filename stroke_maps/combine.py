@@ -168,23 +168,11 @@ class Combine(object):
         """
         df = self._hstack_multiple_dataframes(
             dict_scenario_df_to_merge,
-            cols_for_scenario=[
-                'use_ivt',
-                'use_mt',
-                'use_msu',
-                'selected',
-                'transfer_unit_postcode',
-                'time_ambulance_called',
-                'time_ambulance_arrival',
-                'time_ambulance_leaves_scene',
-                'time_admitting_unit_arrival',
-                'time_needle',
-                'time_transfer_unit_arrival',
-                'time_puncture',
-                'mRS shift',
-                'utility_shift',
-                'mRS 0-2'
-            ])
+            cols_for_any=['stroke_team', 'short_code', 'ssnap_name',
+                          'lsoa_code', 'region', 'region_code', 'region_type',
+                          'country', 'icb', 'icb_code', 'isdn'
+                          ]
+            )
 
         # Create new columns of this diff that:
         cols_to_keep = ['utility_shift', 'mRS shift', 'mRS 0-2']
@@ -250,7 +238,7 @@ class Combine(object):
         df = self._hstack_multiple_dataframes(
             dict_scenario_df_to_merge,
             # add_use_column=True,
-            cols_for_scenario=['selected', ],
+            cols_for_any=['transfer_unit_travel_time'],
             extra_cols_for_index=['transfer_unit_postcode']
             )
 
@@ -308,9 +296,8 @@ class Combine(object):
         """
         df = self._hstack_multiple_dataframes(
             dict_scenario_df_to_merge,
-            cols_for_scenario=':'
+            cols_for_any=[]
             )
-        # TO DO - maybe change this so that all columns are combined always and at the end remove duplicate columns, move to 'any' scenario --------------
 
         # Create new columns of this diff that:
         cols_to_keep = ['utility_shift', 'mRS shift', 'mRS 0-2']
@@ -362,39 +349,44 @@ class Combine(object):
                 p1 = pair[1]
                 diff_col_name = f'diff_{p0}_minus_{p1}'
 
-                data0 = df[p0][c]
-                data1 = df[p1][c]
                 try:
-                    for col in data0.columns:
-                        if col in ['mean', 'median']:
-                            # Take the difference between averages.
-                            data_diff = data0[col] - data1[col]
-                        elif col in ['std']:
-                            # Propagate errors for std.
-                            # Convert pandas NA to numpy NaN.
-                            d0 = data0[col].copy().pow(2.0)
-                            d1 = data1[col].copy().pow(2.0)
-                            d2 = d0.add(d1, fill_value=0)
-                            data_diff = d2.pow(0.5)
-                        else:
-                            # Don't know what to do with the rest yet. ----------------------
-                            # TO DO
-                            data_diff = ['help'] * len(df)
-                        df[diff_col_name, c, col] = data_diff
-                except AttributeError:
-                    # No more nested column index levels.
-                    data_diff = data0 - data1
-                    df[diff_col_name, c] = data_diff
-                    # TO DO - currently this just takes the difference
-                    # as though it's a mean or a median. No way to
-                    # propagate the error as though it's an std.
+                    data0 = df[p0][c]
+                    data1 = df[p1][c]
+                    success = True
+                except KeyError:
+                    success = False
+                if success:
+                    try:
+                        for col in data0.columns:
+                            if col in ['mean', 'median']:
+                                # Take the difference between averages.
+                                data_diff = data0[col] - data1[col]
+                            elif col in ['std']:
+                                # Propagate errors for std.
+                                # Convert pandas NA to numpy NaN.
+                                d0 = data0[col].copy().pow(2.0)
+                                d1 = data1[col].copy().pow(2.0)
+                                d2 = d0.add(d1, fill_value=0)
+                                data_diff = d2.pow(0.5)
+                            else:
+                                # Don't know what to do with the rest yet. ----------------------
+                                # TO DO
+                                data_diff = ['help'] * len(df)
+                            df[diff_col_name, c, col] = data_diff
+                    except AttributeError:
+                        # No more nested column index levels.
+                        data_diff = data0 - data1
+                        df[diff_col_name, c] = data_diff
+                        # TO DO - currently this just takes the difference
+                        # as though it's a mean or a median. No way to
+                        # propagate the error as though it's an std.
         return df
 
     def _hstack_multiple_dataframes(
             self,
             dict_scenario_df_to_merge,
             add_use_column=False,
-            cols_for_scenario=[],
+            cols_for_any=[],
             extra_cols_for_index=[]
             ):
         """
@@ -454,28 +446,28 @@ class Combine(object):
             if len(dfs_to_merge.items()) < 1:
                 shared_col_name = df.index.name
 
-            if isinstance(cols_for_scenario, str):
+            if isinstance(cols_for_any, str):
                 # Use all columns.
-                pass
+                cols_for_any = df.columns.tolist()
             else:
-                split_bool = ((len(cols_for_scenario) != (len(df.columns))))
-                split_for_any = True if split_bool else False
-                if split_for_any:
-                    # Find the names of these columns in this df.
-                    # (so can specify one level of multiindex only).
-                    scenario_cols = cols_for_scenario
+                pass
 
-                    if len(dfs_to_merge.items()) < 1:
-                        # First time around this loop.
-                        # Split off these columns from this scenario.
-                        df_any = df.copy().drop(
-                            cols_for_scenario, axis='columns')
-                        dfs_to_merge['any'] = df_any
-                    else:
-                        pass
+            split_bool = ((len(cols_for_any) != (len(df.columns))))
+            split_for_any = True if split_bool else False
+            if split_for_any:
+                # Find the names of these columns in this df.
+                # (so can specify one level of multiindex only).
 
-                    # Remove columns for "any" scenario:
-                    df = df[scenario_cols]
+                if len(dfs_to_merge.items()) < 1:
+                    # First time around this loop.
+                    # Split off these columns from this scenario.
+                    df_any = df[cols_for_any]
+                    dfs_to_merge['any'] = df_any
+                else:
+                    pass
+
+                # Remove columns for "any" scenario:
+                df = df.copy().drop(cols_for_any, axis='columns')
 
             if add_use_column:
                 shared_col_is_list = ((isinstance(shared_col_name, list)) |

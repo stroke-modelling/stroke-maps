@@ -89,7 +89,7 @@ def main(
         gdf_boundaries_catchment.columns.get_level_values('scenario')))
 
     col_unit = find_multiindex_column_names(
-        gdf_points_units, property=['unit'])
+        gdf_points_units, property=['postcode'])
     col_postcode = find_multiindex_column_names(
         gdf_lines_transfer, property=['postcode'])
 
@@ -140,16 +140,23 @@ def main(
                 how='left'
                 )
             # Move colours over to the unit scatter markers gdf.
-            # Add a blank 'subtype' level to catchment:
+            # Add a blank 'subtype' level to catchment
+            # if necessary:
             gdf_here = gdf_boundaries_catchment.copy().loc[
                 mask, [col_output_colour_lines]]
-            gdf_here.columns = [
+            headers = gdf_points_units.columns.names
+            gdf_here_cols = [
                 gdf_here.columns.get_level_values('property'),
-                gdf_here.columns.get_level_values('scenario'),
-                [''] * len(gdf_here.columns)
+                gdf_here.columns.get_level_values('scenario')
             ]
-            gdf_here.columns = gdf_here.columns.set_names(
-                ['property', 'scenario', 'subtype'])
+            if 'subtype' in headers:
+                try:
+                    gdf_here_cols.append(
+                        gdf_here.columns.get_level_values('subtype'))
+                except KeyError:
+                    gdf_here_cols.append([''] * len(gdf_here_cols[0]))
+            gdf_here.columns = gdf_here_cols
+            gdf_here.columns.names = headers
             gdf_here.index.name = 'unit'
 
             gdf_points_units = pd.merge(
@@ -525,8 +532,15 @@ def _setup_plot_map_outcome(
     vmax = all_mean_vals.max().values[0]
     vmin = all_mean_vals.min().values[0]
 
+    # Currently the column also contains scenario
+    # but we'll drop that heading by the time this is plotted.
+    # col_outcome = find_multiindex_column_names(
+    #     gdf_boundaries_lsoa, scenario=[scenario], property=[outcome],
+    #     subtype=['mean'])
+    col_outcome = (outcome, 'mean')
+
     lsoa_boundary_kwargs = {
-        'column': (outcome, 'mean'),
+        'column': col_outcome,
         'edgecolor': 'face',
         # Adjust size of colourmap key, and add label
         'legend_kwds': {
@@ -1000,6 +1014,11 @@ def plot_map_outcome(
         gdf_boundaries_regions, scenario)
     gdf_points_units = drop_other_scenarios(gdf_points_units, scenario)
     gdf_boundaries_lsoa = drop_other_scenarios(gdf_boundaries_lsoa, scenario)
+
+    # Make sure outcome column isn't string
+    # otherwise the choropleth will do one block colour instead
+    # of a colour scale by column value.
+    gdf_boundaries_lsoa = gdf_boundaries_lsoa.convert_dtypes()
 
     fig, ax = plt.subplots(figsize=(7, 5))
     ax.set_title(title)

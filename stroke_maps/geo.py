@@ -205,7 +205,10 @@ def make_new_periphery_data(
     # List of scenarios included in the units and LSOA data:
     scenario_list = sorted(list(set(
         df_units.columns.get_level_values('scenario'))))
-    scenario_list.remove('any')
+    try:
+        scenario_list.remove('any')
+    except ValueError:
+        pass
     # Also remove any 'diff' scenarios:
     scenario_list = [s for s in scenario_list if not s.startswith('diff')]
 
@@ -227,6 +230,7 @@ def make_new_periphery_data(
         index=df_lsoa_regions.index,
         columns=cols_df_lsoa_regions
     )
+    df_lsoa_regions.columns.names = df_lsoa.columns.names
     # Index column: 'region'.
 
     # Merge region info into LSOA data:
@@ -359,22 +363,14 @@ def link_pathway_geography(
     # Reset index for easier access to values:
     df_units = df_units.copy()
     df_units = df_units.reset_index()
-    # Remove 'scenario' column level:
-    # (only need columns that belong in "any" scenario)
-    scenario_list = list(set(df_units.columns.get_level_values('scenario')))
-    scenarios_to_keep = [s for s in scenario_list if (
-        (s == '') |
-        (s == 'any') |
-        (s.startswith('Unnamed'))
-    )]
     # Which columns do we want?
-    cols = find_multiindex_column_names(df_units, scenario=scenarios_to_keep)
+    cols = find_multiindex_column_names(df_units, property=['postcode', 'region_code'])
     # Subset of only these columns:
     df_units = df_units.loc[:, cols].copy()
     # Drop the 'scenario' level:
-    df_units = df_units.droplevel('scenario', axis='columns')
+    # df_units = df_units.droplevel('scenario', axis='columns')
 
-    col_unit = find_multiindex_column_names(df_units, property=['unit'])
+    col_unit = find_multiindex_column_names(df_units, property=['postcode'])
     mask_units_selected = df_units[col_unit].isin(units_selected)
 
     # Find list of regions containing selected units:
@@ -396,7 +392,7 @@ def link_pathway_geography(
                     col_unit_postcode])))
 
     # Mask for regions containing periphery units:
-    col_unit = find_multiindex_column_names(df_units, property=['unit'])
+    col_unit = find_multiindex_column_names(df_units, property=['postcode'])
     mask_regions_periphery_units = (
         df_units[col_unit].isin(periphery_units))
     # Find list of periphery regions:
@@ -447,6 +443,10 @@ def check_scenario_level(
             # Only 'property' exists.
             # Add columns for 'scenario' below it:
             df_cols = [df.columns, [scenario_name] * len(df.columns)]
+            if levels[0] is None:
+                levels = ['property', 'scenario']
+            else:
+                levels = [levels[0]] + ['scenario']
         else:
             # Assume that a 'property' level exists and will go above
             # 'scenario', and anything else will go below it.
@@ -458,12 +458,14 @@ def check_scenario_level(
                 [scenario_name] * len(df.columns),
                 *df_cols_other
                 ]
+            levels = [levels[0]] + ['scenario'] + levels[1:]
 
         df = pd.DataFrame(
             df.values,
             index=df.index,
             columns=df_cols
         )
+        df.columns.names = levels
         return df
 
 
@@ -576,6 +578,7 @@ def main(
     gdf_lines_transfer = fill_blank_level(gdf_lines_transfer)
     gdf_boundaries_lsoa = fill_blank_level(gdf_boundaries_lsoa)
     gdf_boundaries_catchment = fill_blank_level(gdf_boundaries_catchment)
+
     # Replace any blank subtypes with "":
     gdf_boundaries_regions = fill_blank_level(
         gdf_boundaries_regions, level='subtype', fill_value='')
@@ -592,6 +595,25 @@ def main(
     col_short_code = find_multiindex_column_names(
         gdf_points_units, property=['short_code'])
     gdf_points_units = gdf_points_units.sort_values(col_short_code)
+
+    # Set geometry columns in case names were reset there:
+    def set_geometry(gdf):
+        try:
+            gdf.columns.get_level_values('property')
+        except KeyError:
+            # Nothing to do here.
+            return gdf
+
+        col_geometry = find_multiindex_column_names(
+            gdf, property=['geometry'])
+        # Set geometry column:
+        gdf = gdf.set_geometry(col_geometry)
+        return gdf
+    gdf_boundaries_regions = set_geometry(gdf_boundaries_regions)
+    gdf_points_units = set_geometry(gdf_points_units)
+    gdf_lines_transfer = set_geometry(gdf_lines_transfer)
+    gdf_boundaries_lsoa = set_geometry(gdf_boundaries_lsoa)
+    gdf_boundaries_catchment = set_geometry(gdf_boundaries_catchment)
 
     to_return = (
         gdf_boundaries_regions,
@@ -695,22 +717,25 @@ def _load_geometry_stroke_units(df_units):
 
     # Load and parse geometry data
     # Relative import from package files:
-    path_to_file = files('stroke_maps.data').joinpath('unit_postcodes_coords.csv')
+    path_to_file = files('stroke_maps.data').joinpath(
+        'unit_postcodes_coords.csv')
     df_coords = pd.read_csv(path_to_file, index_col='postcode')
     # Index: postcode.
     # Columns: BNG_E, BNG_N, Longitude, Latitude.
     # Add another column level to the coordinates.
+    headers = df_units.columns.names
     cols_df_coords = [
         df_coords.columns,                 # property
         ['any'] * len(df_coords.columns),  # scenario
     ]
-    if 'subtype' in df_units.columns.names:
+    if 'subtype' in headers:
         cols_df_coords.append([''] * len(df_coords.columns))
     df_coords = pd.DataFrame(
         df_coords.values,
         index=df_coords.index,
         columns=cols_df_coords
     )
+    df_coords.columns.names = headers
     # Merge:
     df_units = pd.merge(
         df_units, df_coords,
@@ -805,15 +830,19 @@ def _load_geometry_transfer_units(df_transfer):
     #          BNG_E_mt, BNG_N_mt, Longitude_mt, Latitude_mt
 
     # Add another column level to the coordinates.
+    headers = df_transfer.columns.names
     cols_df_arrival_transfer = [
         df_arrival_transfer.columns,                 # property
         ['any'] * len(df_arrival_transfer.columns),  # scenario
     ]
+    if 'subtype' in headers:
+        cols_df_arrival_transfer.append([''] * len(df_arrival_transfer.columns))
     df_arrival_transfer = pd.DataFrame(
         df_arrival_transfer.values,
         index=df_arrival_transfer.index,
         columns=cols_df_arrival_transfer
     )
+    df_arrival_transfer.columns.names = headers
 
     # Merge this into the main DataFrame:
     df_transfer = pd.merge(
@@ -862,21 +891,18 @@ def _load_geometry_lsoa(df_lsoa):
 
     # ----- Prepare separate data -----
     # Set up column level info for the merged DataFrame.
-    # Everything needs three levels: scenario, property, subtype.
-    # Geometry:
+    # Everything needs at least two levels: scenario and property.
+    # Sometimes also a 'subtype' level.
+    # Add another column level to the coordinates.
+    col_level_names = df_lsoa.columns.names
     cols_gdf_boundaries_lsoa = [
         gdf_boundaries_lsoa.columns,                 # property
         ['any'] * len(gdf_boundaries_lsoa.columns),  # scenario
-        [''] * len(gdf_boundaries_lsoa.columns),     # subtype
     ]
-    # Final data:
-    col_level_names = ['property', 'scenario', 'subtype']
-    # col_geometry = ('geometry', 'any', '')
-
-    # TO DO - make sure this runs whether the subtype level exists or not ----------------------
+    if 'subtype' in col_level_names:
+        cols_gdf_boundaries_lsoa.append([''] * len(gdf_boundaries_lsoa.columns))
 
     # Make all data to be combined have the same column levels.
-
     # Geometry:
     gdf_boundaries_lsoa = pd.DataFrame(
         gdf_boundaries_lsoa.values,

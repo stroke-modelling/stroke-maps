@@ -372,6 +372,10 @@ class Catchment(object):
             limit_to_wales=self.limit_to_wales
             )
 
+        # Set index columns to LSOA names and codes:
+        df_catchment = df_catchment.reset_index()
+        df_catchment = df_catchment.set_index(['lsoa', 'lsoa_code'])
+
         self.df_lsoa = df_catchment
 
     def find_each_lsoa_chosen_unit(self, df_time_lsoa_to_units):
