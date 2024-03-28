@@ -11,6 +11,7 @@ import pandas as pd
 from shapely.geometry import Polygon  # For extent box.
 import geopandas
 import numpy as np
+from pandas.api.types import is_numeric_dtype  # For checking dtype.
 
 import stroke_maps.plot_functions as maps  # for plotting.
 from stroke_maps.utils import find_multiindex_column_names
@@ -1018,7 +1019,14 @@ def plot_map_outcome(
     # Make sure outcome column isn't string
     # otherwise the choropleth will do one block colour instead
     # of a colour scale by column value.
-    gdf_boundaries_lsoa = gdf_boundaries_lsoa.convert_dtypes()
+    if is_numeric_dtype(gdf_boundaries_lsoa[lsoa_boundary_kwargs['column']]):
+        pass
+    else:
+        gdf_boundaries_lsoa = gdf_boundaries_lsoa.convert_dtypes()
+        # Then make sure it's the right type of NaN.
+        # Need numpy NaN instead of the pandas NA that appears with
+        # the convert_dtypes() line.
+        # gdf_boundaries_lsoa = gdf_boundaries_lsoa.replace(pd.NA, np.NaN)
 
     fig, ax = plt.subplots(figsize=(7, 5))
     ax.set_title(title)
