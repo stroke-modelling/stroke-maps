@@ -30,7 +30,7 @@ from stroke_maps.utils import find_multiindex_column_names
 # #####################
 # ##### LOAD DATA #####
 # #####################
-def import_geojson(region_type: 'str'):
+def import_geojson(region_type: 'str', path_to_file: 'str'=''):
     """
     Import a geojson file as GeoDataFrame.
 
@@ -55,10 +55,13 @@ def import_geojson(region_type: 'str'):
         'LHB20NM': 'LHB.geojson'
     }
 
-    # Import region file:
-    file_input = geojson_file_dict[region_type]
-    # Relative import from package files:
-    path_to_file = files('stroke_maps.data').joinpath(file_input)
+    if len(path_to_file) == 0:
+        # Import region file:
+        file_input = geojson_file_dict[region_type]
+        # Relative import from package files:
+        path_to_file = files('stroke_maps.data').joinpath(file_input)
+    else:
+        pass
     gdf_boundaries = geopandas.read_file(path_to_file)
 
     if region_type == 'LSOA11NM':
@@ -66,7 +69,13 @@ def import_geojson(region_type: 'str'):
         # Only keep these columns.
         geo_cols = ['LSOA11NM', 'BNG_E', 'BNG_N',
                     'LONG', 'LAT', 'GlobalID', 'geometry']
-
+    elif region_type == 'MSOA11NM':
+        index_col = 'MSOA11CD'
+        # Only keep these columns.
+        # geo_cols = ['MSOA11NM', 'BNG_E', 'BNG_N',
+        #             'LONG', 'LAT', 'GlobalID', 'geometry']
+        geo_cols = list(gdf_boundaries.columns)
+        geo_cols.remove('MSOA11CD')
     else:
         index_col = 'region_code'
         # Only keep these columns:
