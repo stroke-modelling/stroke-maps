@@ -24,7 +24,10 @@ def make_geometry_transfer_units(df_transfer):
 
     Inputs
     ------
-    df_transfer - pd.DataFrame. Unit info.
+    df_transfer - pd.DataFrame. Unit info. Should have index
+                  named 'postcode' containing stroke units and
+                  a column 'transfer_unit_postcode' containing
+                  their transfer units.
 
     Returns
     -------
@@ -129,4 +132,32 @@ def create_lines_from_coords(
     # if isinstance(col_geom, tuple):
     #     gdf['geometry']
     # TO DO - implement CRS explicitly ---------------------------------------------
+    return gdf
+
+
+def combine_regions(
+        gdf,
+        col_to_dissolve,
+        ):
+    """
+    Wrapper for geopandas dissolve.
+
+    Example use: blob together LSOA geometry that shares a catchment unit.
+
+    Inputs
+    ------
+    gdf                - GeoDataFrame. With geometry to be blobbed.
+    col_to_dissolve    - str / tuple. Column name to blob.
+    col_geometry       - str / tuple. Column name for geometry.
+    col_after_dissolve - str / tuple. Column name for final data.
+
+    Returns
+    -------
+    gdf2 - GeoDataFrame. With blobbed geometry.
+    """
+    # Copy to avoid pandas shenanigans.
+    gdf = gdf.copy()
+    # Drop columns that won't make sense after dissolve:
+    gdf = gdf[[col_to_dissolve, 'geometry']]
+    gdf = gdf.dissolve(by=col_to_dissolve)
     return gdf
