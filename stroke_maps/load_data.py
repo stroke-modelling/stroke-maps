@@ -100,7 +100,61 @@ def stroke_unit_coordinates():
     path_to_file = files('stroke_maps').joinpath('data').joinpath(
         'unit_postcodes_coords.csv')
     df = pd.read_csv(path_to_file, index_col='postcode')
-    return df
+
+    # Convert lists of coordinates to geometry points.
+    # Use the British National Grid coordinates:
+    x_col = 'BNG_E'  # Easting
+    y_col = 'BNG_N'  # Northing
+    # Which has this coordinates reference system by definition:
+    crs = 'EPSG:27700'
+    # And store the results in a column called 'geometry':
+    coords_col = 'geometry'
+
+    # Pick out lists of the coordinates:
+    # Extra .values.reshape are to remove the column headings.
+    x = df[x_col].values.reshape(len(df))
+    y = df[y_col].values.reshape(len(df))
+
+    # Convert each pair of coordinates to a Point(x, y).
+    df[coords_col] = gpd.points_from_xy(x, y)
+
+    # Convert to GeoDataFrame:
+    gdf_units = gpd.GeoDataFrame(df, geometry=coords_col, crs=crs)
+
+    return gdf_units
+
+
+def england_outline():
+    """
+    Import England boundaries in British National Grid crs.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'outline_England.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
+
+
+def wales_outline():
+    """
+    Import Wales boundaries in British National Grid crs.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'outline_Wales.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
+
+
+def englandwales_outline():
+    """
+    Import England boundaries in British National Grid crs.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'outline_EnglandWales.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
 
 
 def lsoa_geography():
