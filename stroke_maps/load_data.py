@@ -188,3 +188,14 @@ def lhb_geography():
         'LHB.geojson')
     gdf = gpd.read_file(path_to_file)
     return gdf
+
+
+def isdn_geography():
+    """
+    Import Integrated Stroke Delivery Network boundaries for England.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'outline_isdn.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
