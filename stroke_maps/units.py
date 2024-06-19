@@ -1,3 +1,0 @@
-"""
-Calculations for stroke units.
-"""
