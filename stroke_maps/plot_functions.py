@@ -7,6 +7,7 @@ import matplotlib.path as mpath        # For custom patches.
 # For adjusting size of text scatter markers:
 from PIL import ImageFont
 from matplotlib import font_manager
+from matplotlib.transforms import Bbox  # for drawing labels
 
 import numpy as np
 from stroke_maps.utils import find_multiindex_column_names
@@ -146,6 +147,59 @@ def create_units_legend(
     return leg2
 
 
+def add_nonoverlapping_text_labels(units, ax, col, y_step=0.05, fontsize=7):
+    '''
+    Creates non-overlapping text labels for stroke units to the input axis
+    Inputs:
+    - units - dataframe, contains data on each hospital
+    - ax - axis object, to add labels to
+    - col - string, label for each position
+    - y_step - number, amount to adjust position on y axis by
+    - fontsize - number, size of font in labels
+    Output:
+    - ax - axis object with addition of text labels
+
+    Copied from the stroke unit demographics book (20th June 2024).
+    https://samuel-book.github.io/stroke_unit_demographics/03_create_maps.html
+    '''
+    # Work on a copy of the dataframe so that the original
+    # doesn't get edited outside this function:
+    units = units.copy()
+
+    # Create empty array
+    text_rectangles = []
+
+    # Sort labels descending in y axis (gives better results)
+    units.loc[:, 'sort_by'] = units.geometry.y
+    units = units.sort_values(by='sort_by', ascending=False, axis=0)
+    del units['sort_by']
+
+    # Add labels to the plot
+    # Loop through each stroke unit - in each loop, get x, y and label
+    geom_unit = zip(units.geometry.x, units.geometry.y, units[col])
+    for x, y, label in geom_unit:
+
+        # Add label to the axis (xy is location of point)
+        text = ax.annotate(
+            text=label,
+            xy=(x, y),  # location of point
+            xytext=(8, 8),  # location of text that goes with point
+            textcoords='offset points',  # offset text in points from xy value
+            fontsize=fontsize,
+            bbox=dict(facecolor='w', alpha=0.3, edgecolor='none',
+                      boxstyle="round", pad=0.1))
+
+        rect = text.get_window_extent()
+        for other_rect in text_rectangles:
+            while Bbox.intersection(rect, other_rect):  # overlapping
+                x, y = text.get_position()
+                text.set_position((x, (y - y_step)))
+                rect = text.get_window_extent()
+        text_rectangles.append(rect)
+
+    return (ax)
+
+
 # ####################
 # ##### PLOTTING #####
 # ####################
@@ -277,7 +331,7 @@ def draw_boundaries(ax, gdf, **kwargs):
     # Draw the main map with colours (choropleth):
     gdf.plot(
         ax=ax,              # Set which axes to use for plot (only one here)
-        antialiased=False,  # Avoids artifact boundry lines
+        antialiased=False,  # Avoids artefact boundary lines
         **kwargs
         )
     return ax
@@ -352,12 +406,14 @@ def scatter_units(
         handles = []
         for row in gdf.index:
             gdf_m = gdf.loc[[row]]
-            col_geometry = find_multiindex_column_names(
-                gdf_m, property=['geometry'])
+            # col_geometry = find_multiindex_column_names(
+            #     gdf_m, property=['geometry'])
+            col_geometry = 'geometry'
             # Update marker shape and size:
             try:
-                col_marker = find_multiindex_column_names(
-                    gdf_m, property=['marker'])
+                # col_marker = find_multiindex_column_names(
+                #     gdf_m, property=['marker'])
+                col_marker = 'marker'
                 marker = gdf_m[col_marker].values[0]
                 kwargs_dict['marker'] = marker
             except KeyError:
@@ -381,8 +437,9 @@ def scatter_units(
         return ax, handles
     else:
 
-        col_geometry = find_multiindex_column_names(
-            gdf, property=['geometry'])
+        # col_geometry = find_multiindex_column_names(
+        #     gdf, property=['geometry'])
+        col_geometry = 'geometry'
         # Draw all points in one call.
         ax.scatter(
             gdf[col_geometry].x,
