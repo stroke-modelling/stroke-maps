@@ -346,6 +346,9 @@ def scatter_units(
     """
     Draw scatter markers for IVT stroke units.
 
+    If gdf has a column named 'marker', its contents will be used
+    to assign shapes to the markers.
+
     Inputs
     ------
     ax            - pyplot axis. Where to draw the scatter markers.
