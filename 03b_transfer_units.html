@@ -1,0 +1,1364 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Transfer units &#8212; Stroke maps</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03b_transfer_units';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Catchment areas for stroke units" href="04a_lsoa_catchment.html" />
+    <link rel="prev" title="Stroke units" href="03a_stroke_units.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Stroke maps</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">⭐ Essentials</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_import_data.html">Import geography data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03a_stroke_units.html">Stroke units</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Transfer units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04a_lsoa_catchment.html">Catchment areas for stroke units</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">📚 Reference data creation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_ref.html">Data reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">⚡ Extras</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04b_island_lsoa_catchment.html">“Island” catchment areas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">🌍 Plotting examples with matplotlib</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_maps_value.html">Colour maps by continuous value</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06a_label_units.html">Labelling stroke units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06b_periphery.html">Finding nearby points of interest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06c_clip_and_inset.html">Map insets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06d_colour_catchment.html">Colour catchment areas by transfer unit</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/samuel-modelling/stroke-maps" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03b_transfer_units.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Transfer units</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aims">Aims</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-setup">Notebook setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-stroke-unit-data">Load the stroke unit data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-transfer-units">Find the transfer units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-the-function-work">How does the function work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-removing-certain-units">Example 1: removing certain units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-overwriting-the-nearest-transfer-unit">Example 2: overwriting the nearest transfer unit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#england-and-wales-plot-the-transfer-unit-links">England and Wales: Plot the transfer unit links</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-transfer-unit-data-for-plotting">Set up transfer unit data for plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-map">Create the map</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#northern-ireland-plot-the-transfer-unit-links">Northern Ireland: Plot the transfer unit links</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Set up transfer unit data for plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Create the map</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="transfer-units">
+<h1>Transfer units<a class="headerlink" href="#transfer-units" title="Permalink to this heading">#</a></h1>
+<p>This notebook shows how to allocate a transfer unit to each acute stroke unit.</p>
+<section id="plain-english-summary">
+<h2>Plain English summary<a class="headerlink" href="#plain-english-summary" title="Permalink to this heading">#</a></h2>
+<p>Different acute stroke units provide different services. Most provide intravenous thrombolysis (IVT) and a few provide mechanical thrombectomy (MT).</p>
+<p>If a patient with a stroke needs mechanical thrombectomy but has been taken to a stroke unit that doesn’t provide it, they can receive a transfer to another stroke unit that does provide it.</p>
+<p>This notebook shows how the <code class="docutils literal notranslate"><span class="pre">stroke-maps</span></code> package can find each stroke unit’s selected transfer unit.</p>
+</section>
+<section id="aims">
+<h2>Aims<a class="headerlink" href="#aims" title="Permalink to this heading">#</a></h2>
+<p>Separately for England and Wales and for Northern Ireland, Find the MT transfer unit for each acute stroke unit and plot the results on a map.</p>
+</section>
+<section id="method">
+<h2>Method<a class="headerlink" href="#method" title="Permalink to this heading">#</a></h2>
+<p>The following data is required:</p>
+<ul class="simple">
+<li><p>a dataframe of stroke units and their services.</p></li>
+<li><p>a matrix of travel times between all stroke units.</p></li>
+</ul>
+<p>For the maps, we also need:</p>
+<ul class="simple">
+<li><p>coordinates of the stroke units</p></li>
+<li><p>a blank outline of the country</p></li>
+</ul>
+<p>The first step in the calculation is to find the closest unit offering MT to each other stroke unit. There is also an option to overwrite the default closest unit for chosen units.</p>
+<p>This notebook shows two examples of possible changes to the default settings:</p>
+<ol class="arabic simple">
+<li><p>Removing certain units. Make it impossible for certain units to be selected as a transfer unit.</p></li>
+<li><p>Overwriting the nearest transfer unit. By default, the selected transfer unit is the nearest transfer unit. By providing the name of an alternative unit, that unit can be selected instead.</p></li>
+</ol>
+<p>We then draw a map showing a line drawn between each unit and its transfer unit using the default settings. This is done separately for England and Wales and for Northern Ireland.</p>
+<p>Assumptions:</p>
+<ul class="simple">
+<li><p>The stroke units considered must be in the travel time matrix. <em>TO DO</em>: make a map or something to show which ones. For now the list can be found from the dataframe.</p></li>
+</ul>
+</section>
+<section id="notebook-setup">
+<h2>Notebook setup<a class="headerlink" href="#notebook-setup" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stroke_maps.load_data</span>
+<span class="kn">import</span> <span class="nn">stroke_maps.catchment</span>  <span class="c1"># to link units to transfer units.</span>
+<span class="kn">import</span> <span class="nn">stroke_maps.geo</span>  <span class="c1"># to create transfer unit geometry to plot.</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-the-stroke-unit-data">
+<h2>Load the stroke unit data<a class="headerlink" href="#load-the-stroke-unit-data" title="Permalink to this heading">#</a></h2>
+<p>We import the data from the package files. The imported dataframe, <code class="docutils literal notranslate"><span class="pre">df_units</span></code>, contains only units that appear in the travel time matrix. This includes units that are not acute stroke units (i.e. provide neither thrombolysis nor thrombectomy).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_region_lookup</span><span class="p">()</span>
+
+<span class="c1"># Reduce this to only the few columns that we need for this demo:</span>
+<span class="n">columns_to_keep</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;stroke_team&#39;</span><span class="p">,</span>  <span class="c1"># These two name columns aren&#39;t needed but</span>
+    <span class="s1">&#39;ssnap_name&#39;</span><span class="p">,</span>   <span class="c1"># they are easier to read than postcodes.</span>
+    <span class="s1">&#39;use_ivt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;use_mt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;transfer_unit_postcode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;country&#39;</span>  <span class="c1"># not needed but used for an example in this notebook.</span>
+<span class="p">]</span>
+<span class="n">df_units</span> <span class="o">=</span> <span class="n">df_units</span><span class="p">[</span><span class="n">columns_to_keep</span><span class="p">]</span>
+
+<span class="n">df_units</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>stroke_team</th>
+      <th>ssnap_name</th>
+      <th>use_ivt</th>
+      <th>use_mt</th>
+      <th>transfer_unit_postcode</th>
+      <th>country</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SY231ER</th>
+      <td>Bronglais Hospital (Aberystwyth)</td>
+      <td>Bronglais Hospital</td>
+      <td>1</td>
+      <td>0</td>
+      <td>nearest</td>
+      <td>Wales</td>
+    </tr>
+    <tr>
+      <th>CB20QQ</th>
+      <td>Addenbrooke's Hospital, Cambridge</td>
+      <td>Addenbrooke's Hospital</td>
+      <td>1</td>
+      <td>1</td>
+      <td>nearest</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>L97AL</th>
+      <td>University Hospital Aintree, Liverpool</td>
+      <td>University Hospital Aintree</td>
+      <td>1</td>
+      <td>1</td>
+      <td>nearest</td>
+      <td>England</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Explanations of the columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">use_ivt</span></code>: whether this stroke unit provides IVT. The value is 1 (one) if it does, and 0 (zero) if it doesn’t.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_mt</span></code>: whether this stroke unit provides MT. The value is 1 (one) if it does, and 0 (zero) if it doesn’t.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transfer_unit_postcode</span></code>: optional column for overwriting the transfer units returned by the calculation. The value is <code class="docutils literal notranslate"><span class="pre">nearest</span></code> if the function should use the nearest transfer unit, or the postcode of the transfer unit that you would like to use instead.</p></li>
+</ul>
+</section>
+<section id="find-the-transfer-units">
+<h2>Find the transfer units<a class="headerlink" href="#find-the-transfer-units" title="Permalink to this heading">#</a></h2>
+<p>The transfer units are found in the following function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SY231ER</th>
+      <td>135.8</td>
+      <td>CF144XW</td>
+    </tr>
+    <tr>
+      <th>CB20QQ</th>
+      <td>0.0</td>
+      <td>CB20QQ</td>
+    </tr>
+    <tr>
+      <th>L97AL</th>
+      <td>0.0</td>
+      <td>L97AL</td>
+    </tr>
+    <tr>
+      <th>CH495PE</th>
+      <td>27.3</td>
+      <td>L97AL</td>
+    </tr>
+    <tr>
+      <th>BA13NG</th>
+      <td>33.7</td>
+      <td>BS105NB</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>SL24HL</th>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>HP112TT</th>
+      <td>34.8</td>
+      <td>OX39DU</td>
+    </tr>
+    <tr>
+      <th>BA214AT</th>
+      <td>74.5</td>
+      <td>BS105NB</td>
+    </tr>
+    <tr>
+      <th>YO318HE</th>
+      <td>44.5</td>
+      <td>LS13EX</td>
+    </tr>
+    <tr>
+      <th>LL572PW</th>
+      <td>103.5</td>
+      <td>L97AL</td>
+    </tr>
+  </tbody>
+</table>
+<p>141 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>The index column has the same contents as the index of the input units dataframe (<code class="docutils literal notranslate"><span class="pre">df_units</span></code>).</p></li>
+<li><p>When the transfer unit is the same as the starting unit, the travel time is zero.</p></li>
+<li><p>When the starting unit is not an acute stroke unit, the transfer unit postcode is <code class="docutils literal notranslate"><span class="pre">pd.NA</span></code> (pandas missing value, displays as ‘&lt;NA&gt;’) and the travel time is <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (numpy Not A Number).</p></li>
+</ul>
+</section>
+<section id="how-does-the-function-work">
+<h2>How does the function work?<a class="headerlink" href="#how-does-the-function-work" title="Permalink to this heading">#</a></h2>
+<p><strong>TO DO</strong> write me please</p>
+</section>
+<section id="example-1-removing-certain-units">
+<h2>Example 1: removing certain units<a class="headerlink" href="#example-1-removing-certain-units" title="Permalink to this heading">#</a></h2>
+<p>To remove certain units from this calculation, just remove them from the input <code class="docutils literal notranslate"><span class="pre">df_units</span></code> dataframe.</p>
+<p>The default setup means that some stroke units will transfer their patients across countries. Add some columns to the transfer dataframe to show this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Merge in the country for the starting unit:</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_transfer</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+<span class="p">)</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">df_country</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="s1">&#39;country_start&#39;</span><span class="p">})</span>
+<span class="c1"># Merge in the country for the transfer unit:</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_country</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">],</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;transfer_unit_postcode&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+<span class="p">)</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">df_country</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="s1">&#39;country_end&#39;</span><span class="p">})</span>
+
+<span class="c1"># Find units where the start and end countries don&#39;t match:</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">df_country</span><span class="p">[</span><span class="s1">&#39;country_start&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df_country</span><span class="p">[</span><span class="s1">&#39;country_end&#39;</span><span class="p">]</span>
+
+<span class="c1"># Show these units.</span>
+<span class="c1"># Drop NA to not display units that don&#39;t have a transfer unit.</span>
+<span class="n">df_country</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+      <th>country_start</th>
+      <th>country_end</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>LL185UJ</th>
+      <td>67.0</td>
+      <td>L97AL</td>
+      <td>Wales</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>HR12ER</th>
+      <td>72.4</td>
+      <td>CF144XW</td>
+      <td>England</td>
+      <td>Wales</td>
+    </tr>
+    <tr>
+      <th>LL137TD</th>
+      <td>54.1</td>
+      <td>L97AL</td>
+      <td>Wales</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>LL572PW</th>
+      <td>103.5</td>
+      <td>L97AL</td>
+      <td>Wales</td>
+      <td>England</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Patients will be transferred to Cardiff (CF144XW) from Hereford (HR12ER), and patients will be transferred to Liverpool (L97AL) from Rhyl (LL185UJ), Wrexham (LL137TD), and Bangor (LL572PW).</p>
+<p>One option for avoiding this is to remove the Welsh hospitals entirely and perform the calculation for only English stroke units. Then later, do the opposite and have two sets of results.</p>
+<p>Reload the list of stroke units and pick out any in Wales:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_region_lookup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postcodes_in_wales</span> <span class="o">=</span> <span class="n">df_units</span><span class="p">[</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Wales&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">postcodes_in_wales</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;SY231ER&#39;, &#39;CF144XW&#39;, &#39;LL185UJ&#39;, &#39;NP448YN&#39;, &#39;LL137TD&#39;, &#39;SA66NL&#39;,
+       &#39;CF479DT&#39;, &#39;SA148QF&#39;, &#39;CF311RQ&#39;, &#39;NP202UB&#39;, &#39;SA612PZ&#39;, &#39;SA312AF&#39;,
+       &#39;LL572PW&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now keep only the rows of the dataframe that are not in that list of Welsh postcodes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many stroke teams are in the list now?</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>141
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mask is True when the stroke unit is in Wales.</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">df_units</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">postcodes_in_wales</span><span class="p">)</span>
+
+<span class="c1"># Include the &quot;~&quot; tilde to take everything in the mask that is _not_ True:</span>
+<span class="n">df_units</span> <span class="o">=</span> <span class="n">df_units</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># How many stroke teams are in the list now?</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>128
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now calculate the transfer units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy the exact same code from before to check the countries before and after:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Merge in the country for the starting unit:</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_transfer</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+<span class="p">)</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">df_country</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="s1">&#39;country_start&#39;</span><span class="p">})</span>
+<span class="c1"># Merge in the country for the transfer unit:</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_country</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">],</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;transfer_unit_postcode&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+<span class="p">)</span>
+<span class="n">df_country</span> <span class="o">=</span> <span class="n">df_country</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span> <span class="s1">&#39;country_end&#39;</span><span class="p">})</span>
+
+<span class="c1"># Find units where the start and end countries don&#39;t match:</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">df_country</span><span class="p">[</span><span class="s1">&#39;country_start&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df_country</span><span class="p">[</span><span class="s1">&#39;country_end&#39;</span><span class="p">]</span>
+
+<span class="c1"># Show these units.</span>
+<span class="c1"># Drop NA to not display units that don&#39;t have a transfer unit.</span>
+<span class="n">df_country</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+      <th>country_start</th>
+      <th>country_end</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This dataframe is empty because no stroke units are transferred to another stroke unit in a different country.</p>
+</section>
+<section id="example-2-overwriting-the-nearest-transfer-unit">
+<h2>Example 2: overwriting the nearest transfer unit<a class="headerlink" href="#example-2-overwriting-the-nearest-transfer-unit" title="Permalink to this heading">#</a></h2>
+<p>To force patients from Royal Devon &amp; Exeter to be transferred to Bristol, we first look up the postcodes of those units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span><span class="p">[((</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;stroke_team&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Exeter&#39;</span><span class="p">))</span> <span class="o">|</span>
+          <span class="p">(</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;stroke_team&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Bristol&#39;</span><span class="p">)))][</span><span class="n">columns_to_keep</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>stroke_team</th>
+      <th>ssnap_name</th>
+      <th>use_ivt</th>
+      <th>use_mt</th>
+      <th>transfer_unit_postcode</th>
+      <th>country</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>BS28HW</th>
+      <td>Bristol Royal Infirmary</td>
+      <td>University Hospitals Bristol Inpatient Team</td>
+      <td>0</td>
+      <td>0</td>
+      <td>nearest</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>EX25DW</th>
+      <td>Royal Devon and Exeter Hospital</td>
+      <td>Royal Devon and Exeter Hospital</td>
+      <td>1</td>
+      <td>0</td>
+      <td>nearest</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>BS105NB</th>
+      <td>North Bristol Hospital (Southmead)</td>
+      <td>North Bristol Hospitals</td>
+      <td>1</td>
+      <td>1</td>
+      <td>nearest</td>
+      <td>England</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Have a quick check of where patients in Exeter were transferred to before:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;EX25DW&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transfer_unit_travel_time      59.5
+transfer_unit_postcode       PL68DH
+Name: EX25DW, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then in the stroke unit dataframe, we update the <code class="docutils literal notranslate"><span class="pre">transfer_unit_postcode</span></code> column for the ‘EX25DW’ (Exeter) row. We set the value to ‘BS105NB’ for Bristol.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;EX25DW&#39;</span><span class="p">,</span> <span class="s1">&#39;transfer_unit_postcode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;BS105NB&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check that this updated:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;EX25DW&#39;</span><span class="p">,</span> <span class="n">columns_to_keep</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>stroke_team               Royal Devon and Exeter Hospital
+ssnap_name                Royal Devon and Exeter Hospital
+use_ivt                                                 1
+use_mt                                                  0
+transfer_unit_postcode                            BS105NB
+country                                           England
+Name: EX25DW, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now calculate the transfer units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And check the result for Exeter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;EX25DW&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>transfer_unit_travel_time       90.6
+transfer_unit_postcode       BS105NB
+Name: EX25DW, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="england-and-wales-plot-the-transfer-unit-links">
+<h2>England and Wales: Plot the transfer unit links<a class="headerlink" href="#england-and-wales-plot-the-transfer-unit-links" title="Permalink to this heading">#</a></h2>
+<section id="set-up-transfer-unit-data-for-plotting">
+<h3>Set up transfer unit data for plotting<a class="headerlink" href="#set-up-transfer-unit-data-for-plotting" title="Permalink to this heading">#</a></h3>
+<p>Load in the default units data and create the transfer unit data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_region_lookup</span><span class="p">()</span>
+<span class="n">df_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a GeoDataFrame of Line objects connecting each start unit to its transfer unit:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">make_geometry_transfer_units</span><span class="p">(</span><span class="n">df_transfer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-the-map">
+<h3>Create the map<a class="headerlink" href="#create-the-map" title="Permalink to this heading">#</a></h3>
+<p>Load the outline of England and Wales:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_ew</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">englandwales_outline</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then load in the stroke unit coordinates and merge in the services information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_coordinates</span><span class="p">()</span>
+<span class="n">gdf_units</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">,</span> <span class="s1">&#39;use_mt&#39;</span><span class="p">]],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the country outlines, the unit locations, and links between units using matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Plot the country outlines:</span>
+<span class="n">gdf_ew</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>              <span class="c1"># Set which axes to use for plot</span>
+    <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Avoids artefact boundary lines</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Lines between units:</span>
+<span class="n">gdf_transfer</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># place lines behind the scatter markers.</span>
+<span class="p">)</span>
+
+<span class="c1"># Pick out which stroke units to plot:</span>
+<span class="n">mask_ivt</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># IVT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IVT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># MT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># Remove the axis border, ticks, labels...</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/fe9343374d15c4c4c5b01aa14c8dded00a51861a47a9178d8cd18f36a70dd997.png" src="_images/fe9343374d15c4c4c5b01aa14c8dded00a51861a47a9178d8cd18f36a70dd997.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="northern-ireland-plot-the-transfer-unit-links">
+<h2>Northern Ireland: Plot the transfer unit links<a class="headerlink" href="#northern-ireland-plot-the-transfer-unit-links" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Set up transfer unit data for plotting<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Load in the default units data and create the transfer unit data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ni_stroke_unit_services</span><span class="p">()</span>
+<span class="n">df_transfer_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units_ni</span><span class="p">,</span> <span class="n">use_northern_ireland</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a GeoDataFrame of Line objects connecting each start unit to its transfer unit:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_transfer_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">make_geometry_transfer_units</span><span class="p">(</span><span class="n">df_transfer_ni</span><span class="p">,</span> <span class="n">use_northern_ireland</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>Create the map<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>Load the outline of England and Wales:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ni_outline</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then load in the stroke unit coordinates and merge in the services information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_units_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_coordinates_ni</span><span class="p">()</span>
+<span class="n">gdf_units_ni</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="p">,</span> <span class="n">df_units_ni</span><span class="p">[[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">,</span> <span class="s1">&#39;use_mt&#39;</span><span class="p">]],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the country outlines, the unit locations, and links between units using matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Plot the country outlines:</span>
+<span class="n">gdf_ni</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>              <span class="c1"># Set which axes to use for plot</span>
+    <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Avoids artefact boundary lines</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+    <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Lines between units:</span>
+<span class="n">gdf_transfer_ni</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span>  <span class="c1"># place lines behind the scatter markers.</span>
+<span class="p">)</span>
+
+<span class="c1"># Pick out which stroke units to plot:</span>
+<span class="n">mask_ivt</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># IVT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IVT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># MT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># Remove the axis border, ticks, labels...</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0aa4f0a224f5f88649e89b59da3424d0aecfcf35874e31e7d3aff65c54663f0a.png" src="_images/0aa4f0a224f5f88649e89b59da3424d0aecfcf35874e31e7d3aff65c54663f0a.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
+<p>We have shown how the transfer unit calculation works and how the default settings can be overwritten to remove certain units or to force certain transfer units to be selected.</p>
+<p>We have also shown how to create maps that show which units select which transfer units.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03a_stroke_units.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Stroke units</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04a_lsoa_catchment.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Catchment areas for stroke units</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aims">Aims</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-setup">Notebook setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-stroke-unit-data">Load the stroke unit data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-transfer-units">Find the transfer units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-the-function-work">How does the function work?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-removing-certain-units">Example 1: removing certain units</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-overwriting-the-nearest-transfer-unit">Example 2: overwriting the nearest transfer unit</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#england-and-wales-plot-the-transfer-unit-links">England and Wales: Plot the transfer unit links</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-transfer-unit-data-for-plotting">Set up transfer unit data for plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-map">Create the map</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#northern-ireland-plot-the-transfer-unit-links">Northern Ireland: Plot the transfer unit links</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Set up transfer unit data for plotting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Create the map</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Anna Laws
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

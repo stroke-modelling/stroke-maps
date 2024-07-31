@@ -1,0 +1,2796 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Catchment areas for stroke units &#8212; Stroke maps</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '04a_lsoa_catchment';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data reference" href="data_ref.html" />
+    <link rel="prev" title="Transfer units" href="03b_transfer_units.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Stroke maps</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">⭐ Essentials</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="02_import_data.html">Import geography data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03a_stroke_units.html">Stroke units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03b_transfer_units.html">Transfer units</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Catchment areas for stroke units</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">📚 Reference data creation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_ref.html">Data reference</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">⚡ Extras</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04b_island_lsoa_catchment.html">“Island” catchment areas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">🌍 Plotting examples with matplotlib</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="05_maps_value.html">Colour maps by continuous value</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06a_label_units.html">Labelling stroke units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06b_periphery.html">Finding nearby points of interest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06c_clip_and_inset.html">Map insets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06d_colour_catchment.html">Colour catchment areas by transfer unit</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/samuel-modelling/stroke-maps" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/04a_lsoa_catchment.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Catchment areas for stroke units</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aims">Aims</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-setup">Notebook setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#england-and-wales">England and Wales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-acute-stroke-unit">Calculate nearest acute stroke unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-thrombectomy-unit">Calculate nearest thrombectomy unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-transfer-unit">Calculate nearest transfer unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-results-for-nearest-acute-mt-and-transfer-units">Combine results for nearest acute, MT, and transfer units</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-catchment-areas">Plot the catchment areas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#northern-ireland">Northern Ireland</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Load data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Calculate nearest acute stroke unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculate nearest thrombectomy unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Calculate nearest transfer unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Combine results for nearest acute, MT, and transfer units</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Plot the catchment areas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="catchment-areas-for-stroke-units">
+<h1>Catchment areas for stroke units<a class="headerlink" href="#catchment-areas-for-stroke-units" title="Permalink to this heading">#</a></h1>
+<p>This notebook shows how to determine the closest acute stroke unit to any patient in any part of England and Wales or of Northern Ireland.</p>
+<section id="plain-english-summary">
+<h2>Plain English summary<a class="headerlink" href="#plain-english-summary" title="Permalink to this heading">#</a></h2>
+<p>Usually we assume that when an ambulance is taking a patient to an acute stroke unit, the ambulance will choose to go to the nearest acute stroke unit out of all available options.</p>
+<p>Every area of England and Wales is in a single Lower Super Output Area (LSOA) and every area of Northern Ireland is in a single Small Area (SA). By calculating the travel time from every LSOA or SA to every stroke unit, we can calculate which acute stroke unit is closest to any patient anywhere.</p>
+<p>Looking at it the other way around, we can find which areas of the country are in each stroke unit’s “catchment area”.</p>
+</section>
+<section id="aims">
+<h2>Aims<a class="headerlink" href="#aims" title="Permalink to this heading">#</a></h2>
+<p>This notebook shows how to use the <code class="docutils literal notranslate"><span class="pre">stroke-maps</span></code> package to find the catchment area of each acute stroke unit.</p>
+</section>
+<section id="method">
+<h2>Method<a class="headerlink" href="#method" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Load a list of the LSOA or Small Areas</p></li>
+<li><p>Load a list of the travel times from each area to each stroke unit</p></li>
+<li><p>Find the stroke unit with the minimum time to each area</p></li>
+<li><p>Create a map of the resulting catchment areas</p></li>
+</ul>
+</section>
+<section id="notebook-setup">
+<h2>Notebook setup<a class="headerlink" href="#notebook-setup" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stroke_maps.load_data</span>
+<span class="kn">import</span> <span class="nn">stroke_maps.catchment</span>
+<span class="kn">import</span> <span class="nn">stroke_maps.geo</span>  <span class="c1"># to make catchment area geometry</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">mapclassify</span> <span class="kn">import</span> <span class="n">greedy</span>  <span class="c1"># to assign colours to regions on map.</span>
+                                <span class="c1"># ^ also requires libpysal.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="england-and-wales">
+<h2>England and Wales<a class="headerlink" href="#england-and-wales" title="Permalink to this heading">#</a></h2>
+<section id="load-data">
+<h3>Load data<a class="headerlink" href="#load-data" title="Permalink to this heading">#</a></h3>
+<p><strong>LSOA travel time</strong></p>
+<p>This dataframe contains one row for each LSOA in England and Wales. There is one column for each stroke unit in England and Wales. The value in each cell is the time from that row’s LSOA to that column’s stroke unit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_lsoa</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">travel_time_matrix_lsoa</span><span class="p">()</span>
+
+<span class="c1"># Show the first five rows and columns:</span>
+<span class="n">df_travel_lsoa</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>B152TH</th>
+      <th>B714HJ</th>
+      <th>B95SS</th>
+      <th>BA13NG</th>
+      <th>BA214AT</th>
+    </tr>
+    <tr>
+      <th>LSOA</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adur 001A</th>
+      <td>173.3</td>
+      <td>179.8</td>
+      <td>171.2</td>
+      <td>161.5</td>
+      <td>152.9</td>
+    </tr>
+    <tr>
+      <th>Adur 001B</th>
+      <td>173.3</td>
+      <td>179.8</td>
+      <td>172.3</td>
+      <td>161.5</td>
+      <td>152.9</td>
+    </tr>
+    <tr>
+      <th>Adur 001C</th>
+      <td>173.3</td>
+      <td>180.9</td>
+      <td>172.3</td>
+      <td>150.8</td>
+      <td>151.9</td>
+    </tr>
+    <tr>
+      <th>Adur 001D</th>
+      <td>173.3</td>
+      <td>180.9</td>
+      <td>172.3</td>
+      <td>161.5</td>
+      <td>152.9</td>
+    </tr>
+    <tr>
+      <th>Adur 001E</th>
+      <td>174.4</td>
+      <td>180.9</td>
+      <td>173.3</td>
+      <td>150.8</td>
+      <td>151.9</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Write how many LSOA and then how many stroke teams are in this matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_lsoa</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(34752, 125)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Stroke unit services</strong></p>
+<p>This dataframe contains information on which stroke units provide which services (IVT and MT). The imported dataframe, df_units, contains only units that appear in the travel time matrix. This includes units that are not acute stroke units (i.e. provide neither thrombolysis nor thrombectomy).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_region_lookup</span><span class="p">()</span>
+
+<span class="n">df_units</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>postcode</th>
+      <th>SY231ER</th>
+      <th>CB20QQ</th>
+      <th>L97AL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>stroke_team</th>
+      <td>Bronglais Hospital (Aberystwyth)</td>
+      <td>Addenbrooke's Hospital, Cambridge</td>
+      <td>University Hospital Aintree, Liverpool</td>
+    </tr>
+    <tr>
+      <th>short_code</th>
+      <td>AB</td>
+      <td>AD</td>
+      <td>AI</td>
+    </tr>
+    <tr>
+      <th>ssnap_name</th>
+      <td>Bronglais Hospital</td>
+      <td>Addenbrooke's Hospital</td>
+      <td>University Hospital Aintree</td>
+    </tr>
+    <tr>
+      <th>use_ivt</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>use_mt</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>use_msu</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>transfer_unit_postcode</th>
+      <td>nearest</td>
+      <td>nearest</td>
+      <td>nearest</td>
+    </tr>
+    <tr>
+      <th>lsoa</th>
+      <td>Ceredigion 002A</td>
+      <td>Cambridge 013D</td>
+      <td>Liverpool 005A</td>
+    </tr>
+    <tr>
+      <th>lsoa_code</th>
+      <td>W01000512</td>
+      <td>E01017995</td>
+      <td>E01006654</td>
+    </tr>
+    <tr>
+      <th>region</th>
+      <td>Hywel Dda University Health Board</td>
+      <td>NHS Cambridgeshire and Peterborough ICB - 06H</td>
+      <td>NHS Cheshire and Merseyside ICB - 99A</td>
+    </tr>
+    <tr>
+      <th>region_code</th>
+      <td>W11000025</td>
+      <td>E38000260</td>
+      <td>E38000101</td>
+    </tr>
+    <tr>
+      <th>region_type</th>
+      <td>LHB</td>
+      <td>SICBL</td>
+      <td>SICBL</td>
+    </tr>
+    <tr>
+      <th>country</th>
+      <td>Wales</td>
+      <td>England</td>
+      <td>England</td>
+    </tr>
+    <tr>
+      <th>icb</th>
+      <td>NaN</td>
+      <td>NHS Cambridgeshire and Peterborough Integrated...</td>
+      <td>NHS Cheshire and Merseyside Integrated Care Board</td>
+    </tr>
+    <tr>
+      <th>icb_code</th>
+      <td>NaN</td>
+      <td>E54000056</td>
+      <td>E54000008</td>
+    </tr>
+    <tr>
+      <th>isdn</th>
+      <td>NaN</td>
+      <td>East of England (South)</td>
+      <td>Cheshire and Merseyside</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-nearest-acute-stroke-unit">
+<h3>Calculate nearest acute stroke unit<a class="headerlink" href="#calculate-nearest-acute-stroke-unit" title="Permalink to this heading">#</a></h3>
+<p>The full travel time matrix gives the time from every LSOA to every stroke unit, including those that don’t provide acute care. Realistically an ambulance should never choose to take the patient to those units.</p>
+<p>Firstly, find a list of stroke units that offer acute care. These are units where <code class="docutils literal notranslate"><span class="pre">use_ivt</span></code> and/or <code class="docutils literal notranslate"><span class="pre">use_mt</span></code> are equal to 1 (one).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_acute</span> <span class="o">=</span> <span class="p">((</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">postcodes_acute_units</span> <span class="o">=</span> <span class="n">df_units</span><span class="p">[</span><span class="n">mask_acute</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check how many postcodes are in this list compared with how many stroke units are in the full dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_units</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+<span class="n">n_units_acute</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">postcodes_acute_units</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">n_units</span><span class="p">,</span> <span class="n">n_units_acute</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>141 113
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now make a copy of the travel time matrix that only includes times to these units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_lsoa_acute</span> <span class="o">=</span> <span class="n">df_travel_lsoa</span><span class="p">[</span><span class="n">postcodes_acute_units</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># (Number of LSOA, number of stroke teams)</span>
+<span class="n">df_travel_lsoa_acute</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(34752, 113)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the function to find which of the units in the reduced dataframe is closest to each LSOA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_catchment_acute</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">find_nearest_unit</span><span class="p">(</span><span class="n">df_travel_lsoa_acute</span><span class="p">)</span>
+
+<span class="n">df_catchment_acute</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time</th>
+      <th>unit_postcode</th>
+    </tr>
+    <tr>
+      <th>LSOA</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adur 001A</th>
+      <td>17.6</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001B</th>
+      <td>18.7</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001C</th>
+      <td>17.6</td>
+      <td>BN112DH</td>
+    </tr>
+    <tr>
+      <th>Adur 001D</th>
+      <td>17.6</td>
+      <td>BN112DH</td>
+    </tr>
+    <tr>
+      <th>Adur 001E</th>
+      <td>16.5</td>
+      <td>BN112DH</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-nearest-thrombectomy-unit">
+<h3>Calculate nearest thrombectomy unit<a class="headerlink" href="#calculate-nearest-thrombectomy-unit" title="Permalink to this heading">#</a></h3>
+<p>We can use a very similar method to before by only keeping stroke units that offer thrombectomy (MT):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">postcodes_mt_units</span> <span class="o">=</span> <span class="n">df_units</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check how many postcodes are in this list compared with how many stroke units are in the full dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_units</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+<span class="n">n_units_mt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">postcodes_mt_units</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">n_units</span><span class="p">,</span> <span class="n">n_units_mt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>141 25
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now make a copy of the travel time matrix that includes times to only these units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_lsoa_mt</span> <span class="o">=</span> <span class="n">df_travel_lsoa</span><span class="p">[</span><span class="n">postcodes_mt_units</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># (Number of LSOA, number of stroke teams)</span>
+<span class="n">df_travel_lsoa_mt</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(34752, 25)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the function to find which of the units in the reduced dataframe is closest to each LSOA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_catchment_mt</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">find_nearest_unit</span><span class="p">(</span><span class="n">df_travel_lsoa_mt</span><span class="p">)</span>
+
+<span class="n">df_catchment_mt</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time</th>
+      <th>unit_postcode</th>
+    </tr>
+    <tr>
+      <th>LSOA</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adur 001A</th>
+      <td>17.6</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001B</th>
+      <td>18.7</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001C</th>
+      <td>19.8</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001D</th>
+      <td>19.8</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001E</th>
+      <td>19.8</td>
+      <td>BN25BE</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-nearest-transfer-unit">
+<h3>Calculate nearest transfer unit<a class="headerlink" href="#calculate-nearest-transfer-unit" title="Permalink to this heading">#</a></h3>
+<p>The method for finding transfer units is shown in more detail in <em>the transfer units demonstration</em> (<strong>TO DO</strong>: add link to this).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+    </tr>
+    <tr>
+      <th>postcode</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SY231ER</th>
+      <td>135.8</td>
+      <td>CF144XW</td>
+    </tr>
+    <tr>
+      <th>CB20QQ</th>
+      <td>0.0</td>
+      <td>CB20QQ</td>
+    </tr>
+    <tr>
+      <th>L97AL</th>
+      <td>0.0</td>
+      <td>L97AL</td>
+    </tr>
+    <tr>
+      <th>CH495PE</th>
+      <td>27.3</td>
+      <td>L97AL</td>
+    </tr>
+    <tr>
+      <th>BA13NG</th>
+      <td>33.7</td>
+      <td>BS105NB</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>SL24HL</th>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>HP112TT</th>
+      <td>34.8</td>
+      <td>OX39DU</td>
+    </tr>
+    <tr>
+      <th>BA214AT</th>
+      <td>74.5</td>
+      <td>BS105NB</td>
+    </tr>
+    <tr>
+      <th>YO318HE</th>
+      <td>44.5</td>
+      <td>LS13EX</td>
+    </tr>
+    <tr>
+      <th>LL572PW</th>
+      <td>103.5</td>
+      <td>L97AL</td>
+    </tr>
+  </tbody>
+</table>
+<p>141 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="combine-results-for-nearest-acute-mt-and-transfer-units">
+<h3>Combine results for nearest acute, MT, and transfer units<a class="headerlink" href="#combine-results-for-nearest-acute-mt-and-transfer-units" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine nearest unit and nearest MT unit:</span>
+<span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_catchment_acute</span><span class="p">,</span> <span class="n">df_catchment_mt</span><span class="p">,</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+    <span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_acute&#39;</span><span class="p">,</span> <span class="s1">&#39;_mt&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="c1"># Combine these with the nearest unit&#39;s transfer unit:</span>
+<span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_results</span><span class="p">,</span> <span class="n">df_transfer</span><span class="p">,</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_results</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time_acute</th>
+      <th>unit_postcode_acute</th>
+      <th>unit_travel_time_mt</th>
+      <th>unit_postcode_mt</th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+    </tr>
+    <tr>
+      <th>LSOA</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adur 001A</th>
+      <td>17.6</td>
+      <td>BN25BE</td>
+      <td>17.6</td>
+      <td>BN25BE</td>
+      <td>0.0</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001B</th>
+      <td>18.7</td>
+      <td>BN25BE</td>
+      <td>18.7</td>
+      <td>BN25BE</td>
+      <td>0.0</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001C</th>
+      <td>17.6</td>
+      <td>BN112DH</td>
+      <td>19.8</td>
+      <td>BN25BE</td>
+      <td>31.6</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001D</th>
+      <td>17.6</td>
+      <td>BN112DH</td>
+      <td>19.8</td>
+      <td>BN25BE</td>
+      <td>31.6</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>Adur 001E</th>
+      <td>16.5</td>
+      <td>BN112DH</td>
+      <td>19.8</td>
+      <td>BN25BE</td>
+      <td>31.6</td>
+      <td>BN25BE</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="plot-the-catchment-areas">
+<h3>Plot the catchment areas<a class="headerlink" href="#plot-the-catchment-areas" title="Permalink to this heading">#</a></h3>
+<p><strong>Set up catchment data for plot</strong></p>
+<p>First, load the LSOA boundaries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_lsoa</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">lsoa_geography</span><span class="p">()</span>
+
+<span class="n">gdf_lsoa</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>LSOA11CD</th>
+      <th>LSOA11NM</th>
+      <th>LSOA11NMW</th>
+      <th>BNG_E</th>
+      <th>BNG_N</th>
+      <th>LONG</th>
+      <th>LAT</th>
+      <th>Shape__Area</th>
+      <th>Shape__Length</th>
+      <th>GlobalID</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>E01000001</td>
+      <td>City of London 001A</td>
+      <td>City of London 001A</td>
+      <td>532129</td>
+      <td>181625</td>
+      <td>-0.09706</td>
+      <td>51.51810</td>
+      <td>157794.481079</td>
+      <td>1685.391778</td>
+      <td>b12173a3-5423-4672-a5eb-f152d2345f96</td>
+      <td>POLYGON ((-0.09474 51.52060, -0.09546 51.51544...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>E01000002</td>
+      <td>City of London 001B</td>
+      <td>City of London 001B</td>
+      <td>532480</td>
+      <td>181699</td>
+      <td>-0.09197</td>
+      <td>51.51868</td>
+      <td>164882.427628</td>
+      <td>1804.828196</td>
+      <td>90274dc4-f785-4afb-95cd-7cc1fc9a2cad</td>
+      <td>POLYGON ((-0.08810 51.51941, -0.09546 51.51544...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>E01000003</td>
+      <td>City of London 001C</td>
+      <td>City of London 001C</td>
+      <td>532245</td>
+      <td>182036</td>
+      <td>-0.09523</td>
+      <td>51.52176</td>
+      <td>42219.805717</td>
+      <td>909.223277</td>
+      <td>7e89d0ba-f186-45fb-961c-8f5ffcd03808</td>
+      <td>POLYGON ((-0.09453 51.52205, -0.09274 51.52139...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Merge in the information on nearest acute stroke unit:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_lsoa</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_lsoa</span><span class="p">,</span> <span class="n">df_results</span><span class="p">[</span><span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">],</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;LSOA11NM&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+
+<span class="n">gdf_lsoa</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>LSOA11CD</th>
+      <th>LSOA11NM</th>
+      <th>LSOA11NMW</th>
+      <th>BNG_E</th>
+      <th>BNG_N</th>
+      <th>LONG</th>
+      <th>LAT</th>
+      <th>Shape__Area</th>
+      <th>Shape__Length</th>
+      <th>GlobalID</th>
+      <th>geometry</th>
+      <th>unit_postcode_acute</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>30556.0</th>
+      <td>30557.0</td>
+      <td>E01031349</td>
+      <td>Adur 001A</td>
+      <td>Adur 001A</td>
+      <td>524915.0</td>
+      <td>105607.0</td>
+      <td>-0.22737</td>
+      <td>50.83651</td>
+      <td>3.641032e+05</td>
+      <td>3054.751704</td>
+      <td>ecd2c1ea-25a5-4f52-b374-126691b92f15</td>
+      <td>POLYGON ((-0.23184 50.83984, -0.22291 50.83909...</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>30557.0</th>
+      <td>30558.0</td>
+      <td>E01031350</td>
+      <td>Adur 001B</td>
+      <td>Adur 001B</td>
+      <td>524825.0</td>
+      <td>106265.0</td>
+      <td>-0.22842</td>
+      <td>50.84244</td>
+      <td>2.921732e+05</td>
+      <td>2977.102897</td>
+      <td>811f014e-053b-4486-a779-d970f44c9302</td>
+      <td>POLYGON ((-0.22593 50.84288, -0.22291 50.83909...</td>
+      <td>BN25BE</td>
+    </tr>
+    <tr>
+      <th>30558.0</th>
+      <td>30559.0</td>
+      <td>E01031351</td>
+      <td>Adur 001C</td>
+      <td>Adur 001C</td>
+      <td>523053.0</td>
+      <td>108004.0</td>
+      <td>-0.25300</td>
+      <td>50.85845</td>
+      <td>5.281768e+06</td>
+      <td>11671.349143</td>
+      <td>5b19d5c7-aa66-42fa-9423-6c41a6808b54</td>
+      <td>POLYGON ((-0.23771 50.84069, -0.24358 50.84107...</td>
+      <td>BN112DH</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Combine LSOA with the same acute stroke unit into a single region:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">combine_regions</span><span class="p">(</span><span class="n">gdf_lsoa</span><span class="p">,</span> <span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert the coordinates to British National Grid so that they match other geometry:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment</span> <span class="o">=</span> <span class="n">gdf_catchment</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:27700&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+    </tr>
+    <tr>
+      <th>unit_postcode_acute</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B152TH</th>
+      <td>MULTIPOLYGON (((416305.700 265602.906, 417069....</td>
+    </tr>
+    <tr>
+      <th>B714HJ</th>
+      <td>MULTIPOLYGON (((399681.915 286423.006, 399888....</td>
+    </tr>
+    <tr>
+      <th>BA13NG</th>
+      <td>MULTIPOLYGON (((390560.691 145587.417, 389463....</td>
+    </tr>
+    <tr>
+      <th>BA214AT</th>
+      <td>MULTIPOLYGON (((332368.011 102237.393, 333313....</td>
+    </tr>
+    <tr>
+      <th>BB23HH</th>
+      <td>POLYGON ((370868.322 414133.507, 370698.959 41...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WD180HB</th>
+      <td>MULTIPOLYGON (((508161.692 189477.493, 507774....</td>
+    </tr>
+    <tr>
+      <th>WF14DG</th>
+      <td>MULTIPOLYGON (((436308.822 404777.192, 436566....</td>
+    </tr>
+    <tr>
+      <th>WR51DD</th>
+      <td>MULTIPOLYGON (((391976.606 238195.600, 392123....</td>
+    </tr>
+    <tr>
+      <th>WV100QP</th>
+      <td>MULTIPOLYGON (((393005.464 294686.206, 393181....</td>
+    </tr>
+    <tr>
+      <th>YO318HE</th>
+      <td>MULTIPOLYGON (((466322.105 430254.405, 466491....</td>
+    </tr>
+  </tbody>
+</table>
+<p>113 rows × 1 columns</p>
+</div></div></div>
+</div>
+<p>For plotting the regions here, assign each region a number in the <code class="docutils literal notranslate"><span class="pre">adjacent_colours</span></code> column. Regions that border each other will never be given the same number.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use greedy to assign colours wherein adjacent polygons are never the same</span>
+<span class="c1"># min_distance is the minimal distance between colours</span>
+<span class="c1"># balance=count means we try to balance number of features per colour</span>
+<span class="n">gdf_catchment</span><span class="p">[</span><span class="s1">&#39;adjacent_colours&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span>
+    <span class="n">gdf_catchment</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Map these numbers to some colour names of our choosing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a list of colour names:</span>
+<span class="c1"># Expecting to only need about six colours for this example.</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Indigo&#39;</span><span class="p">,</span> <span class="s1">&#39;Purple&#39;</span><span class="p">,</span> <span class="s1">&#39;DarkOrchid&#39;</span><span class="p">,</span> <span class="s1">&#39;MediumOrchid&#39;</span><span class="p">,</span> <span class="s1">&#39;Orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;Plum&#39;</span><span class="p">,</span> <span class="s1">&#39;Lavender&#39;</span><span class="p">]</span>
+
+<span class="c1"># Make a dictionary of numbers to colours.</span>
+<span class="c1"># The keys are the numbers in the `adjacent_colours` column:</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colours</span><span class="p">))]</span>
+<span class="n">colour_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">colours</span><span class="p">))</span>
+
+<span class="c1"># Assign these colours to the regions:</span>
+<span class="n">gdf_catchment</span><span class="p">[</span><span class="s1">&#39;colour_str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_catchment</span><span class="p">[</span><span class="s1">&#39;adjacent_colours&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">colour_map</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+      <th>adjacent_colours</th>
+      <th>colour_str</th>
+    </tr>
+    <tr>
+      <th>unit_postcode_acute</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>B152TH</th>
+      <td>MULTIPOLYGON (((416305.700 265602.906, 417069....</td>
+      <td>3</td>
+      <td>MediumOrchid</td>
+    </tr>
+    <tr>
+      <th>B714HJ</th>
+      <td>MULTIPOLYGON (((399681.915 286423.006, 399888....</td>
+      <td>1</td>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>BA13NG</th>
+      <td>MULTIPOLYGON (((390560.691 145587.417, 389463....</td>
+      <td>2</td>
+      <td>DarkOrchid</td>
+    </tr>
+    <tr>
+      <th>BA214AT</th>
+      <td>MULTIPOLYGON (((332368.011 102237.393, 333313....</td>
+      <td>3</td>
+      <td>MediumOrchid</td>
+    </tr>
+    <tr>
+      <th>BB23HH</th>
+      <td>POLYGON ((370868.322 414133.507, 370698.959 41...</td>
+      <td>5</td>
+      <td>Plum</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>WD180HB</th>
+      <td>MULTIPOLYGON (((508161.692 189477.493, 507774....</td>
+      <td>1</td>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>WF14DG</th>
+      <td>MULTIPOLYGON (((436308.822 404777.192, 436566....</td>
+      <td>5</td>
+      <td>Plum</td>
+    </tr>
+    <tr>
+      <th>WR51DD</th>
+      <td>MULTIPOLYGON (((391976.606 238195.600, 392123....</td>
+      <td>4</td>
+      <td>Orchid</td>
+    </tr>
+    <tr>
+      <th>WV100QP</th>
+      <td>MULTIPOLYGON (((393005.464 294686.206, 393181....</td>
+      <td>5</td>
+      <td>Plum</td>
+    </tr>
+    <tr>
+      <th>YO318HE</th>
+      <td>MULTIPOLYGON (((466322.105 430254.405, 466491....</td>
+      <td>0</td>
+      <td>Indigo</td>
+    </tr>
+  </tbody>
+</table>
+<p>113 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p><strong>Create the map</strong></p>
+<p>Load in the stroke unit coordinates and merge in the services information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_units</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_coordinates</span><span class="p">()</span>
+<span class="n">gdf_units</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="p">,</span> <span class="n">df_units</span><span class="p">[[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">,</span> <span class="s1">&#39;use_mt&#39;</span><span class="p">]],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the unit locations and catchment areas using matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Catchment areas:</span>
+<span class="n">gdf_catchment</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>              <span class="c1"># Set which axes to use for plot</span>
+    <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Avoids artefact boundary lines</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">gdf_catchment</span><span class="p">[</span><span class="s1">&#39;colour_str&#39;</span><span class="p">],</span>  <span class="c1"># set colours using this column</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Pick out which stroke units to plot:</span>
+<span class="n">mask_ivt</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdf_units</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># IVT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IVT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># MT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># Remove the axis border, ticks, labels...</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/fc873fa5f594f449071a655b1f606ed48d83c27537bca248e124d8cd384eb2ab.png" src="_images/fc873fa5f594f449071a655b1f606ed48d83c27537bca248e124d8cd384eb2ab.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="northern-ireland">
+<h2>Northern Ireland<a class="headerlink" href="#northern-ireland" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Load data<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p><strong>SA travel time</strong></p>
+<p>This dataframe contains one row for each SA in Northern Ireland. There is one column for each stroke unit in Northern Ireland. The value in each cell is the time from that row’s SA to that column’s stroke unit.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_sa</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">travel_time_matrix_ni_areas</span><span class="p">()</span>
+
+<span class="c1"># Show the first five rows and columns:</span>
+<span class="n">df_travel_sa</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>BT126BA</th>
+      <th>BT161RH</th>
+      <th>BT358DR</th>
+      <th>BT412RL</th>
+      <th>BT476SB</th>
+    </tr>
+    <tr>
+      <th>from_postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>N00000001</th>
+      <td>31.400562</td>
+      <td>37.852665</td>
+      <td>64.223641</td>
+      <td>19.032658</td>
+      <td>79.895643</td>
+    </tr>
+    <tr>
+      <th>N00000002</th>
+      <td>24.677730</td>
+      <td>37.852665</td>
+      <td>61.926859</td>
+      <td>23.292278</td>
+      <td>83.200000</td>
+    </tr>
+    <tr>
+      <th>N00000003</th>
+      <td>24.677730</td>
+      <td>37.852665</td>
+      <td>63.077279</td>
+      <td>20.471335</td>
+      <td>80.991077</td>
+    </tr>
+    <tr>
+      <th>N00000004</th>
+      <td>30.080264</td>
+      <td>42.862547</td>
+      <td>66.504588</td>
+      <td>24.677730</td>
+      <td>83.200000</td>
+    </tr>
+    <tr>
+      <th>N00000005</th>
+      <td>32.710168</td>
+      <td>40.372700</td>
+      <td>66.504588</td>
+      <td>16.088440</td>
+      <td>76.591575</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Write how many SA and then how many stroke teams are in this matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_sa</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4537, 8)
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Stroke unit services</strong></p>
+<p>This dataframe contains information on which stroke units provide which services (IVT and MT). The imported dataframe, df_units, contains only units that appear in the travel time matrix. This includes units that are not acute stroke units (i.e. provide neither thrombolysis nor thrombectomy).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_units_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ni_stroke_unit_services</span><span class="p">()</span>
+
+<span class="n">df_units_ni</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Postcode</th>
+      <th>BT126BA</th>
+      <th>BT161RH</th>
+      <th>BT358DR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Hospital_name</th>
+      <td>Royal Victoria</td>
+      <td>Ulster</td>
+      <td>Daisy Hill</td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td>Belfast</td>
+      <td>Belfast</td>
+      <td>Newry</td>
+    </tr>
+    <tr>
+      <th>door_to_needle</th>
+      <td>43</td>
+      <td>50</td>
+      <td>38</td>
+    </tr>
+    <tr>
+      <th>Fixed</th>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>use_ivt</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>use_mt</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id2">
+<h3>Calculate nearest acute stroke unit<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>The full travel time matrix gives the time from every SA to every stroke unit, including those that don’t provide acute care. Realistically an ambulance should never choose to take the patient to those units.</p>
+<p>Firstly, find a list of stroke units that offer acute care. These are units where <code class="docutils literal notranslate"><span class="pre">use_ivt</span></code> and/or <code class="docutils literal notranslate"><span class="pre">use_mt</span></code> are equal to 1 (one).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_acute</span> <span class="o">=</span> <span class="p">((</span><span class="n">df_units_ni</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">postcodes_acute_units_ni</span> <span class="o">=</span> <span class="n">df_units_ni</span><span class="p">[</span><span class="n">mask_acute</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check how many postcodes are in this list compared with how many stroke units are in the full dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_units</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_units_ni</span><span class="p">)</span>
+<span class="n">n_units_acute</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">postcodes_acute_units_ni</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">n_units</span><span class="p">,</span> <span class="n">n_units_acute</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8 7
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now make a copy of the travel time matrix that only includes times to these units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_sa_acute</span> <span class="o">=</span> <span class="n">df_travel_sa</span><span class="p">[</span><span class="n">postcodes_acute_units_ni</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># (Number of LSOA, number of stroke teams)</span>
+<span class="n">df_travel_sa_acute</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4537, 7)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the function to find which of the units in the reduced dataframe is closest to each LSOA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_catchment_acute_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">find_nearest_unit</span><span class="p">(</span><span class="n">df_travel_sa_acute</span><span class="p">)</span>
+
+<span class="n">df_catchment_acute_ni</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time</th>
+      <th>unit_postcode</th>
+    </tr>
+    <tr>
+      <th>from_postcode</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>N00000001</th>
+      <td>19.032658</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>N00000002</th>
+      <td>23.292278</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>N00000003</th>
+      <td>20.471335</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>N00000004</th>
+      <td>24.677730</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>N00000005</th>
+      <td>16.088440</td>
+      <td>BT412RL</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id3">
+<h3>Calculate nearest thrombectomy unit<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>We can use a very similar method to before by only keeping stroke units that offer thrombectomy (MT):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">postcodes_mt_units_ni</span> <span class="o">=</span> <span class="n">df_units_ni</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check how many postcodes are in this list compared with how many stroke units are in the full dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_units</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_units_ni</span><span class="p">)</span>
+<span class="n">n_units_mt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">postcodes_mt_units_ni</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">n_units</span><span class="p">,</span> <span class="n">n_units_mt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now make a copy of the travel time matrix that includes times to only these units:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_travel_sa_mt</span> <span class="o">=</span> <span class="n">df_travel_sa</span><span class="p">[</span><span class="n">postcodes_mt_units_ni</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># (Number of LSOA, number of stroke teams)</span>
+<span class="n">df_travel_sa_mt</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4537, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run the function to find which of the units in the reduced dataframe is closest to each LSOA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_catchment_mt_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">find_nearest_unit</span><span class="p">(</span><span class="n">df_travel_sa_mt</span><span class="p">)</span>
+
+<span class="n">df_catchment_mt_ni</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time</th>
+      <th>unit_postcode</th>
+    </tr>
+    <tr>
+      <th>from_postcode</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>N00000001</th>
+      <td>31.400562</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000002</th>
+      <td>24.677730</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000003</th>
+      <td>24.677730</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000004</th>
+      <td>30.080264</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000005</th>
+      <td>32.710168</td>
+      <td>BT126BA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id4">
+<h3>Calculate nearest transfer unit<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>The method for finding transfer units is shown in more detail in <em>the transfer units demonstration</em> (<strong>TO DO</strong>: add link to this).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">catchment</span><span class="o">.</span><span class="n">calculate_transfer_units</span><span class="p">(</span><span class="n">df_units_ni</span><span class="p">,</span> <span class="n">use_northern_ireland</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_transfer_ni</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+    </tr>
+    <tr>
+      <th>Postcode</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>BT126BA</th>
+      <td>0.000000</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT161RH</th>
+      <td>19.032658</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT358DR</th>
+      <td>NaN</td>
+      <td>&lt;NA&gt;</td>
+    </tr>
+    <tr>
+      <th>BT412RL</th>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT476SB</th>
+      <td>88.400000</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT521HS</th>
+      <td>69.897939</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT635QQ</th>
+      <td>37.852665</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>BT746DN</th>
+      <td>104.000000</td>
+      <td>BT126BA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id5">
+<h3>Combine results for nearest acute, MT, and transfer units<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine nearest unit and nearest MT unit:</span>
+<span class="n">df_results_ni</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_catchment_acute_ni</span><span class="p">,</span> <span class="n">df_catchment_mt_ni</span><span class="p">,</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+    <span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_acute&#39;</span><span class="p">,</span> <span class="s1">&#39;_mt&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="c1"># Combine these with the nearest unit&#39;s transfer unit:</span>
+<span class="n">df_results_ni</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">df_results_ni</span><span class="p">,</span> <span class="n">df_transfer_ni</span><span class="p">,</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_results_ni</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unit_travel_time_acute</th>
+      <th>unit_postcode_acute</th>
+      <th>unit_travel_time_mt</th>
+      <th>unit_postcode_mt</th>
+      <th>transfer_unit_travel_time</th>
+      <th>transfer_unit_postcode</th>
+    </tr>
+    <tr>
+      <th>from_postcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>N00000001</th>
+      <td>19.032658</td>
+      <td>BT412RL</td>
+      <td>31.400562</td>
+      <td>BT126BA</td>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000002</th>
+      <td>23.292278</td>
+      <td>BT412RL</td>
+      <td>24.677730</td>
+      <td>BT126BA</td>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000003</th>
+      <td>20.471335</td>
+      <td>BT412RL</td>
+      <td>24.677730</td>
+      <td>BT126BA</td>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000004</th>
+      <td>24.677730</td>
+      <td>BT412RL</td>
+      <td>30.080264</td>
+      <td>BT126BA</td>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+    <tr>
+      <th>N00000005</th>
+      <td>16.088440</td>
+      <td>BT412RL</td>
+      <td>32.710168</td>
+      <td>BT126BA</td>
+      <td>28.748618</td>
+      <td>BT126BA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="id6">
+<h3>Plot the catchment areas<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<p><strong>Set up catchment data for plot</strong></p>
+<p>First, load the Small Area boundaries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_sa</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ni_sa_geography</span><span class="p">()</span>
+
+<span class="n">gdf_sa</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>SA2011</th>
+      <th>SOA2011</th>
+      <th>X_COORD</th>
+      <th>Y_COORD</th>
+      <th>Hectares</th>
+      <th>Shape_Leng</th>
+      <th>Shape_Area</th>
+      <th>Code_all</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>N00000002</td>
+      <td>95AA01S2</td>
+      <td>315465</td>
+      <td>377176</td>
+      <td>169.044</td>
+      <td>8476.858446</td>
+      <td>1.690436e+06</td>
+      <td>N00000002</td>
+      <td>POLYGON ((315481.125 376464.219, 315472.344 37...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>N00000004</td>
+      <td>95AA01S2</td>
+      <td>307147</td>
+      <td>376182</td>
+      <td>8700.040</td>
+      <td>46727.719482</td>
+      <td>8.700042e+07</td>
+      <td>N00000004</td>
+      <td>POLYGON ((307740.812 382573.219, 307762.250 38...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>N00000007</td>
+      <td>95AA01S3</td>
+      <td>314461</td>
+      <td>383440</td>
+      <td>1287.990</td>
+      <td>21817.292006</td>
+      <td>1.287995e+07</td>
+      <td>N00000007</td>
+      <td>POLYGON ((311363.312 385217.625, 311600.000 38...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Merge in the information on nearest acute stroke unit:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_sa</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_sa</span><span class="p">,</span> <span class="n">df_results_ni</span><span class="p">[</span><span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">],</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;SA2011&#39;</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+
+<span class="n">gdf_sa</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>SA2011</th>
+      <th>SOA2011</th>
+      <th>X_COORD</th>
+      <th>Y_COORD</th>
+      <th>Hectares</th>
+      <th>Shape_Leng</th>
+      <th>Shape_Area</th>
+      <th>Code_all</th>
+      <th>geometry</th>
+      <th>unit_postcode_acute</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>N00000001</td>
+      <td>95AA01S1</td>
+      <td>315036</td>
+      <td>380003</td>
+      <td>540.076</td>
+      <td>12921.250935</td>
+      <td>5.400762e+06</td>
+      <td>N00000001</td>
+      <td>POLYGON ((315795.031 380324.188, 315785.546 38...</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>N00000002</td>
+      <td>95AA01S2</td>
+      <td>315465</td>
+      <td>377176</td>
+      <td>169.044</td>
+      <td>8476.858446</td>
+      <td>1.690436e+06</td>
+      <td>N00000002</td>
+      <td>POLYGON ((315481.125 376464.219, 315472.344 37...</td>
+      <td>BT412RL</td>
+    </tr>
+    <tr>
+      <th>4536</th>
+      <td>4537</td>
+      <td>N00000003</td>
+      <td>95AA01S2</td>
+      <td>316689</td>
+      <td>378660</td>
+      <td>500.210</td>
+      <td>12659.603928</td>
+      <td>5.002105e+06</td>
+      <td>N00000003</td>
+      <td>POLYGON ((315434.406 378660.625, 315415.500 37...</td>
+      <td>BT412RL</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Combine SA with the same acute stroke unit into a single region:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">geo</span><span class="o">.</span><span class="n">combine_regions</span><span class="p">(</span><span class="n">gdf_sa</span><span class="p">,</span> <span class="s1">&#39;unit_postcode_acute&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert the coordinates to Irish Grid so that they match other geometry:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment_ni</span> <span class="o">=</span> <span class="n">gdf_catchment_ni</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:29902&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment_ni</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+    </tr>
+    <tr>
+      <th>unit_postcode_acute</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>BT126BA</th>
+      <td>MULTIPOLYGON (((330973.812 313545.625, 330964....</td>
+    </tr>
+    <tr>
+      <th>BT161RH</th>
+      <td>MULTIPOLYGON (((353700.375 336535.562, 353703....</td>
+    </tr>
+    <tr>
+      <th>BT412RL</th>
+      <td>POLYGON ((315133.250 375991.062, 315114.781 37...</td>
+    </tr>
+    <tr>
+      <th>BT476SB</th>
+      <td>POLYGON ((241791.359 383254.344, 241778.391 38...</td>
+    </tr>
+    <tr>
+      <th>BT521HS</th>
+      <td>MULTIPOLYGON (((285173.500 400934.625, 285178....</td>
+    </tr>
+    <tr>
+      <th>BT635QQ</th>
+      <td>MULTIPOLYGON (((292320.812 312793.406, 292324....</td>
+    </tr>
+    <tr>
+      <th>BT746DN</th>
+      <td>POLYGON ((234860.312 321458.750, 234858.609 32...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>For plotting the regions here, assign each region a number in the <code class="docutils literal notranslate"><span class="pre">adjacent_colours</span></code> column. Regions that border each other will never be given the same number.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use greedy to assign colours wherein adjacent polygons are never the same</span>
+<span class="c1"># min_distance is the minimal distance between colours</span>
+<span class="c1"># balance=count means we try to balance number of features per colour</span>
+<span class="n">gdf_catchment_ni</span><span class="p">[</span><span class="s1">&#39;adjacent_colours&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span>
+    <span class="n">gdf_catchment_ni</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Map these numbers to some colour names of our choosing:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a list of colour names:</span>
+<span class="c1"># Expecting to only need about six colours for this example.</span>
+<span class="n">colours</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Indigo&#39;</span><span class="p">,</span> <span class="s1">&#39;Purple&#39;</span><span class="p">,</span> <span class="s1">&#39;DarkOrchid&#39;</span><span class="p">,</span> <span class="s1">&#39;MediumOrchid&#39;</span><span class="p">,</span> <span class="s1">&#39;Orchid&#39;</span><span class="p">,</span> <span class="s1">&#39;Plum&#39;</span><span class="p">,</span> <span class="s1">&#39;Lavender&#39;</span><span class="p">]</span>
+
+<span class="c1"># Make a dictionary of numbers to colours.</span>
+<span class="c1"># The keys are the numbers in the `adjacent_colours` column:</span>
+<span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colours</span><span class="p">))]</span>
+<span class="n">colour_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">colours</span><span class="p">))</span>
+
+<span class="c1"># Assign these colours to the regions:</span>
+<span class="n">gdf_catchment_ni</span><span class="p">[</span><span class="s1">&#39;colour_str&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_catchment_ni</span><span class="p">[</span><span class="s1">&#39;adjacent_colours&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">colour_map</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_catchment_ni</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+      <th>adjacent_colours</th>
+      <th>colour_str</th>
+    </tr>
+    <tr>
+      <th>unit_postcode_acute</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>BT126BA</th>
+      <td>MULTIPOLYGON (((330973.812 313545.625, 330964....</td>
+      <td>3</td>
+      <td>MediumOrchid</td>
+    </tr>
+    <tr>
+      <th>BT161RH</th>
+      <td>MULTIPOLYGON (((353700.375 336535.562, 353703....</td>
+      <td>1</td>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>BT412RL</th>
+      <td>POLYGON ((315133.250 375991.062, 315114.781 37...</td>
+      <td>0</td>
+      <td>Indigo</td>
+    </tr>
+    <tr>
+      <th>BT476SB</th>
+      <td>POLYGON ((241791.359 383254.344, 241778.391 38...</td>
+      <td>1</td>
+      <td>Purple</td>
+    </tr>
+    <tr>
+      <th>BT521HS</th>
+      <td>MULTIPOLYGON (((285173.500 400934.625, 285178....</td>
+      <td>2</td>
+      <td>DarkOrchid</td>
+    </tr>
+    <tr>
+      <th>BT635QQ</th>
+      <td>MULTIPOLYGON (((292320.812 312793.406, 292324....</td>
+      <td>2</td>
+      <td>DarkOrchid</td>
+    </tr>
+    <tr>
+      <th>BT746DN</th>
+      <td>POLYGON ((234860.312 321458.750, 234858.609 32...</td>
+      <td>0</td>
+      <td>Indigo</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Create the map</strong></p>
+<p>Load in the stroke unit coordinates and merge in the services information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_units_ni</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">stroke_unit_coordinates_ni</span><span class="p">()</span>
+<span class="n">gdf_units_ni</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="p">,</span> <span class="n">df_units_ni</span><span class="p">[[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">,</span> <span class="s1">&#39;use_mt&#39;</span><span class="p">]],</span>
+    <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the unit locations and catchment areas using matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Catchment areas:</span>
+<span class="n">gdf_catchment_ni</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>              <span class="c1"># Set which axes to use for plot</span>
+    <span class="n">antialiased</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Avoids artefact boundary lines</span>
+    <span class="n">color</span><span class="o">=</span><span class="n">gdf_catchment_ni</span><span class="p">[</span><span class="s1">&#39;colour_str&#39;</span><span class="p">],</span>  <span class="c1"># set colours using this column</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># Pick out which stroke units to plot:</span>
+<span class="n">mask_ivt</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_ivt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">mask_mt</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdf_units_ni</span><span class="p">[</span><span class="s1">&#39;use_mt&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># IVT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_ivt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;IVT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># MT units:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">gdf_units_ni</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask_mt</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;MT unit&#39;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>  <span class="c1"># size</span>
+    <span class="p">)</span>
+
+<span class="c1"># Remove the axis border, ticks, labels...</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add legend:</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/78e7c26bdf65d32645d3d322972af119f75b4d9caa96888e7a0c5f44edd7bc1a.png" src="_images/78e7c26bdf65d32645d3d322972af119f75b4d9caa96888e7a0c5f44edd7bc1a.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
+<p>We have shown how to find the catchment area of each stroke unit and to plot the results.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03b_transfer_units.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Transfer units</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="data_ref.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-english-summary">Plain English summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aims">Aims</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook-setup">Notebook setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#england-and-wales">England and Wales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-acute-stroke-unit">Calculate nearest acute stroke unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-thrombectomy-unit">Calculate nearest thrombectomy unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-nearest-transfer-unit">Calculate nearest transfer unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-results-for-nearest-acute-mt-and-transfer-units">Combine results for nearest acute, MT, and transfer units</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-catchment-areas">Plot the catchment areas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#northern-ireland">Northern Ireland</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Load data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Calculate nearest acute stroke unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculate nearest thrombectomy unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Calculate nearest transfer unit</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Combine results for nearest acute, MT, and transfer units</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Plot the catchment areas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Anna Laws
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
