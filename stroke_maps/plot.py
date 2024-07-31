@@ -1,1062 +1,1351 @@
 """
-Draw some maps using GeoDataFrames from the Catchment data.
-
-crs reference:
-+ EPSG:4326  - longitude / latitude.
-+ CRS:84     - same as EPSG:4326.
-+ EPSG:27700 - British National Grid (BNG).
+Functions for drawing maps.
 """
 import matplotlib.pyplot as plt
-import pandas as pd
-from shapely.geometry import Polygon  # For extent box.
-import geopandas
-import numpy as np
-from pandas.api.types import is_numeric_dtype  # For checking dtype.
+import matplotlib.patches as mpatches  # For blank patches.
+import matplotlib.path as mpath        # For custom patches.
+# For adjusting size of text scatter markers:
+from PIL import ImageFont
+from matplotlib import font_manager
+from matplotlib.transforms import Bbox  # for drawing labels
 
-import stroke_maps.plot_functions as maps  # for plotting.
+import numpy as np
 from stroke_maps.utils import find_multiindex_column_names
 
 
-# ##########################
-# ##### DATA WRANGLING #####
-# ##########################
-def main(
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_boundaries_lsoa,
-        gdf_lines_transfer,
-        crop_axis_leeway=2000,
-        colour_list_units=[],
-        colour_list_periphery_units=[],
+# ###################
+# ##### HELPERS #####
+# ###################
+def combine_legend_sections(
+        section_labels,
+        handles_lists,
+        labels_lists
         ):
     """
-    Set up GeoDataFrames for plotting - crop and add colours.
+    Combine elements of multiple separate legends into one legend.
+
+    +-----------+
+    | o  Thing1 |   <-- Handles are the markers on the left,
+    | x  Thing2 |       labels are the strings on the right.
+    | *  Thing3 |
+    +-----------+
+
+    This combines multiple sets of handles and labels into one long
+    set with new section labels (with invisible handles) between the
+    sets.
 
     Inputs
     ------
-    gdf_boundaries_regions      - GeoDataFrame. Regions info.
-    gdf_points_units            - GeoDataFrame. Units info.
-    gdf_boundaries_catchment    - GeoDataFrame. Catchment areas.
-    gdf_boundaries_lsoa         - GeoDataFrame. LSOA info.
-    gdf_lines_transfer          - GeoDataFrame. Transfer info.
-    crop_axis_leeway            - float. Padding space around the edge of
-                                  the plots from the outermost thing of
-                                  interest. Units to match gdf units.
-    colour_list_units           - list. List of #rrggbbaa colour strings
-                                  or colour maps for catchment areas.
-    colour_list_periphery_units - list. List of #rrggbbaa colour strings
-                                  or colour maps for periphery unit
-                                  catchment areas.
+    section_labels - list of str. Title for each section of legend.
+    handles_lists  - list of lists. Patches for each legend.
+    labels_lists   - list of lists. Labels for each legend.
 
     Returns
     -------
-    gdf_boundaries_regions   - GeoDataFrame. Input but cropped.
-    gdf_points_units         - GeoDataFrame. Input but cropped and
-                               assigned colour strings.
-    gdf_boundaries_catchment - GeoDataFrame. Input but cropped and
-                               assigned colour strings.
-    gdf_boundaries_lsoa      - GeoDataFrame. Input but cropped.
-    gdf_lines_transfer       - GeoDataFrame. Input but cropped and
-                               assigned colour strings.
-    box_shared               - polygon. The box we cropped gdfs to.
-    map_extent_shared        - list. [minx, maxx, miny, maxy]
-                               axis coordinates.
-    )
+    handles_all - list. Patches for combined legend.
+    labels_all - list. Labels for combined legend.
     """
-    tup = crop_data_to_shared_extent(
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_boundaries_lsoa,
-        gdf_lines_transfer,
-        leeway=crop_axis_leeway
-        )
-    (gdf_boundaries_regions,
-     gdf_points_units,
-     gdf_boundaries_catchment,
-     gdf_boundaries_lsoa,
-     gdf_lines_transfer,
-     box_shared,
-     map_extent_shared
-     ) = tup
-    # These GeoDataFrames will contain fewer rows than the files they
-    # were created from because of the cropping - e.g. lots of stroke
-    # units have been removed because they sit outside the map.
-
-    # For each scenario, create colours for unit catchment areas
-    # and their transfer units.
-    scenario_list = list(set(
-        gdf_boundaries_catchment.columns.get_level_values('scenario')))
-
-    col_unit = find_multiindex_column_names(
-        gdf_points_units, property=['postcode'])
-    col_postcode = find_multiindex_column_names(
-        gdf_lines_transfer, property=['postcode'])
-
-    # Define index columns so that pd.merge can be used
-    # (it doesn't behave well with MultiIndex merging).
-    gdf_lines_transfer = gdf_lines_transfer.set_index(col_postcode)
-    gdf_points_units = gdf_points_units.set_index(col_unit)
-    gdf_points_units.index.name = 'unit'
-
-    for scenario in scenario_list:
-        skip_this = (
-            (scenario == '') |
-            (scenario == 'any') |
-            (scenario.startswith('Unnamed'))
-        )
-        if skip_this:
-            pass
-        else:
-            col_output_colour_lines = ('colour_lines', scenario)
-            col_use = ('use', scenario)
-
-            # Convert the colour index columns in the gdf into
-            # #rrggbbaa strings that pyplot understands.
-            gdf_boundaries_catchment = make_colours_for_catchment(
-                gdf_boundaries_catchment,
-                colour_list_units,
-                colour_list_periphery_units,
-                col_colour_ind=('colour_ind', scenario),
-                col_transfer_colour_ind=('transfer_colour_ind', scenario),
-                col_selected=('selected', scenario),
-                col_use=col_use,
-                col_output_colour=('colour', scenario),
-                col_output_colour_lines=('colour_lines', scenario),
-                col_output_colour_periphery=('colour_periphery', scenario)
-                )
-            col_unit = find_multiindex_column_names(
-                gdf_boundaries_catchment, property=['unit'])
-            gdf_boundaries_catchment = (
-                gdf_boundaries_catchment.set_index(col_unit))
-            mask = (gdf_boundaries_catchment[col_use] == 1)
-
-            # Move colours over to the transfer unit gdf.
-            gdf_lines_transfer = pd.merge(
-                gdf_lines_transfer,
-                gdf_boundaries_catchment.loc[mask, [col_output_colour_lines]],
-                left_index=True,
-                right_index=True,
-                how='left'
-                )
-            # Move colours over to the unit scatter markers gdf.
-            # Add a blank 'subtype' level to catchment
-            # if necessary:
-            gdf_here = gdf_boundaries_catchment.copy().loc[
-                mask, [col_output_colour_lines]]
-            headers = gdf_points_units.columns.names
-            gdf_here_cols = [
-                gdf_here.columns.get_level_values('property'),
-                gdf_here.columns.get_level_values('scenario')
-            ]
-            if 'subtype' in headers:
-                try:
-                    gdf_here_cols.append(
-                        gdf_here.columns.get_level_values('subtype'))
-                except KeyError:
-                    gdf_here_cols.append([''] * len(gdf_here_cols[0]))
-            gdf_here.columns = gdf_here_cols
-            gdf_here.columns.names = headers
-            gdf_here.index.name = 'unit'
-
-            gdf_points_units = pd.merge(
-                gdf_points_units,
-                gdf_here,
-                left_index=True,
-                right_index=True,
-                how='left'
-                )
-
-            gdf_boundaries_catchment = gdf_boundaries_catchment.reset_index()
-
-    # Put the index columns back to how they started:
-    gdf_lines_transfer = gdf_lines_transfer.reset_index()
-    gdf_points_units = gdf_points_units.reset_index()
-
-    return (
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_boundaries_lsoa,
-        gdf_lines_transfer,
-        box_shared,
-        map_extent_shared
-        )
+    # Place the results in here:
+    handles_all = []
+    labels_all = []
+    for i, section_label in enumerate(section_labels):
+        # Add a blank handle to start of this handles list...
+        blank_section_patch = mpatches.Patch(visible=False)
+        handles_s = [blank_section_patch] + handles_lists[i]
+        # ... and the section label to the start of this labels list.
+        labels_s = [section_label] + labels_lists[i]
+        # Add these lists to the combined list.
+        handles_all += handles_s
+        labels_all += labels_s
+    return handles_all, labels_all
 
 
-def crop_data_to_shared_extent(
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_boundaries_lsoa,
-        gdf_lines_transfer=None,
-        leeway=10000
+def set_legend_section_labels_to_bold(
+        leg,
+        section_labels,
+        all_labels
         ):
     """
-    Only keep geometry in a shared bounding box.
-
-    For example, the units gdf is reduced to only units within the box.
-    The region boundaries are reduced to only regions that are at least
-    partly in the box and then the region boundaries are trimmed to the
-    box edges.
+    Change the text of some legend entries to bold.
 
     Inputs
     ------
-    gdf_boundaries_regions   - GeoDataFrame. Regions info.
-    gdf_points_units         - GeoDataFrame. Units info.
-    gdf_boundaries_catchment - GeoDataFrame. Catchment areas.
-    gdf_boundaries_lsoa      - GeoDataFrame. LSOA info.
-    gdf_lines_transfer       - GeoDataFrame. Transfer info.
-    leeway                   - float. Padding space around the edge of
-                               the plots from the outermost thing of
-                               interest. Units to match gdf units.
+    leg            - plt.legend object.
+    section_labels - list. Strings to become bold.
+    all_labels     - list. All labels in the legend.
+    """
+    # Get the list of labels in the legend:
+    leg1_list = leg.get_texts()
+    for s in section_labels:
+        # Where is the legend label that matches this section label?
+        i = all_labels.index(s)
+        # Update the label with the same index:
+        leg1_list[i] = leg1_list[i].set_weight('heavy')
+    return leg
+
+
+def create_units_legend(
+        ax,
+        handles_lists,
+        labels_lists,
+        section_labels,
+        **legend_kwargs
+        ):
+    """
+    Create a legend for the unit markers with labels overlaid.
+
+    Each legend handle will end up as a normal scatter marker
+    with a string displayed on top. Looks like e.g. the letters
+    'EX' contained in an oval.
+
+    +-----------+
+    | o  Thing1 |   <-- Handles are the markers on the left,
+    | x  Thing2 |       labels are the strings on the right.
+    | *  Thing3 |
+    +-----------+
+
+    Inputs
+    ------
+    handles_lists   - list of lists. One list of handles for each
+                      legend.
+    labels_lists    - list of lists. One list of labels for each
+                      legend.
+    section_labels  - list of str. Headings to separate the legends
+                      after combination.
+    **legend_kwargs - dict. Kwargs for plt.legend().
 
     Returns
     -------
-    gdf_boundaries_regions   - GeoDataFrame. Input and cropped.
-    gdf_points_units         - GeoDataFrame. Input and cropped.
-    gdf_boundaries_catchment - GeoDataFrame. Input and cropped.
-    gdf_boundaries_lsoa      - GeoDataFrame. Input and cropped.
-    gdf_lines_transfer       - GeoDataFrame. Input and cropped.
-    box                      - polygon. The box we cropped gdfs to.
-    map_extent               - list. [minx, maxx, miny, maxy]
-                               axis coordinates.
+    leg2 - plt.legend() object.
     """
-    # Find a shared axis extent for all GeoDataFrames.
-    # Draw a box that just contains everything useful in all gdf,
-    # then extend it a little bit for a buffer.
-    box, map_extent = find_shared_map_extent(
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_lines_transfer,
-        leeway
+    # By default, each handles list is in the format:
+    # [[h[0], h[1], ... h[n]], [h2[0], h2[1], ... h2[n]]]
+    # Where e.g. h is a list of the oval scatter markers
+    # and h2 is a list of the string labels to place on top.
+    # To combine the handle types, the list needs to be like:
+    # [(h[0], h2[0]), (h[1], h2[1]), ...]
+    # and it has to be pairs of tuple, not of list.
+    # Rejig the list in the following loop:
+    handles_list = []
+    for hlist in handles_lists:
+        hlist = np.array(hlist).T.tolist()
+        hlist = [tuple(h) for h in hlist]
+        handles_list.append(hlist)
+
+    # Add a blank handle and a section label:
+    handles_u, labels_u = combine_legend_sections(
+        section_labels,
+        handles_list,
+        labels_lists
         )
+    # Create the legend from the lists:
+    leg2 = ax.add_artist(plt.legend(
+        handles_u, labels_u, **legend_kwargs
+        ))
+    leg2 = set_legend_section_labels_to_bold(
+        leg2, section_labels, labels_u)
+    return leg2
 
-    # Restrict all gdf to only geometry that falls within this box.
-    gdf_boundaries_regions = _keep_only_geometry_in_box(
-        gdf_boundaries_regions, box)
-    gdf_points_units = _keep_only_geometry_in_box(
-        gdf_points_units, box)
-    gdf_boundaries_catchment = _keep_only_geometry_in_box(
-        gdf_boundaries_catchment, box)
-    gdf_boundaries_lsoa = _keep_only_geometry_in_box(
-        gdf_boundaries_lsoa, box)
 
-    if gdf_lines_transfer is None:
-        pass
-    else:
-        gdf_lines_transfer = _keep_only_geometry_in_box(
-            gdf_lines_transfer, box)
+def add_nonoverlapping_text_labels(units, ax, col, y_step=0.05, fontsize=7):
+    '''
+    Creates non-overlapping text labels for stroke units to the input axis
+    Inputs:
+    - units - dataframe, contains data on each hospital
+    - ax - axis object, to add labels to
+    - col - string, label for each position
+    - y_step - number, amount to adjust position on y axis by
+    - fontsize - number, size of font in labels
+    Output:
+    - ax - axis object with addition of text labels
 
-    # Crop any region boundaries that might extend outside the box.
-    gdf_boundaries_regions = _restrict_geometry_edges_to_box(
-        gdf_boundaries_regions, box)
-    gdf_boundaries_catchment = _restrict_geometry_edges_to_box(
-        gdf_boundaries_catchment, box)
+    Copied from the stroke unit demographics book (20th June 2024).
+    https://samuel-book.github.io/stroke_unit_demographics/03_create_maps.html
+    '''
+    # Work on a copy of the dataframe so that the original
+    # doesn't get edited outside this function:
+    units = units.copy()
 
-    # Create labels *after* choosing the map
-    # extent and restricting the regions to the edges of the box.
-    # Otherwise labels could appear outside the plot.
-    gdf_boundaries_regions = _assign_label_coords_to_regions(
-        gdf_boundaries_regions, 'point_label')
+    # Create empty array
+    text_rectangles = []
 
-    to_return = (
+    # Sort labels descending in y axis (gives better results)
+    units.loc[:, 'sort_by'] = units.geometry.y
+    units = units.sort_values(by='sort_by', ascending=False, axis=0)
+    del units['sort_by']
+
+    # Add labels to the plot
+    # Loop through each stroke unit - in each loop, get x, y and label
+    geom_unit = zip(units.geometry.x, units.geometry.y, units[col])
+    for x, y, label in geom_unit:
+
+        # Add label to the axis (xy is location of point)
+        text = ax.annotate(
+            text=label,
+            xy=(x, y),  # location of point
+            xytext=(8, 8),  # location of text that goes with point
+            textcoords='offset points',  # offset text in points from xy value
+            fontsize=fontsize,
+            bbox=dict(facecolor='w', alpha=0.3, edgecolor='none',
+                      boxstyle="round", pad=0.1))
+
+        rect = text.get_window_extent()
+        for other_rect in text_rectangles:
+            while Bbox.intersection(rect, other_rect):  # overlapping
+                x, y = text.get_position()
+                text.set_position((x, (y - y_step)))
+                rect = text.get_window_extent()
+        text_rectangles.append(rect)
+
+    return (ax)
+
+
+# ####################
+# ##### PLOTTING #####
+# ####################
+def draw_boundaries_by_contents(
+        ax,
         gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_boundaries_lsoa,
-        gdf_lines_transfer,
-        box,
-        map_extent
-        )
-    return to_return
-
-
-def filter_gdf_by_columns(gdf, col_names):
-    """
-    Only take selected columns and rows where any value is 1.
-
-    Use this to only keep certain parts of the GeoDataFrame,
-    e.g. selected units.
-
-    Inputs
-    ------
-    gdf - GeoDataFrame. To be filtered.
-    col_names = list. Column names to keep.
-
-    Returns
-    -------
-    gdf_reduced - GeoDataFrame. The requested subset of values.
-    """
-    # Which columns do we want?
-    cols = gdf.columns.get_level_values('property').isin(col_names)
-    # Subset of only these columns:
-    gdf_selected = gdf.loc[:, cols]
-    # Mask rows where any of these columns equal 1:
-    mask = (gdf_selected == 1).any(axis='columns')
-    # Only keep those rows:
-    gdf_reduced = gdf.copy()[mask]
-    return gdf_reduced
-
-
-def find_shared_map_extent(
-        gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_boundaries_catchment,
-        gdf_lines_transfer=None,
-        leeway=None
+        kwargs_with_nowt={},
+        kwargs_with_periphery={},
+        kwargs_with_unit={}
         ):
     """
-    Find axis boundaries that show the interesting parts of the gdfs.
-
-    Take map extent from the combined LSOA, region, and stroke unit
-    geometry.
-
-    This assumes that all input gdf share a crs.
+    Draw region boundaries formatted by contains unit or periphery bits.
 
     Inputs
     ------
-    gdf_boundaries_regions   - GeoDataFrame. Regions info.
-    gdf_points_units         - GeoDataFrame. Units info.
-    gdf_boundaries_catchment - GeoDataFrame. Catchment areas.
-    gdf_boundaries_lsoa      - GeoDataFrame. LSOA info.
-    gdf_lines_transfer       - GeoDataFrame. Transfer info.
-    leeway                   - float. Padding space around the edge of
-                               the plots from the outermost thing of
-                               interest. Units to match gdf units.
+    ax                     - plt.subplot().
+    gdf_boundaries_regions - GeoDataFrame.
+    kwargs_with_nowt       - dict. Format for regions with
+                             nothing of interest.
+    kwargs_with_periphery  - dict. Format for regions with
+                             periphery bits.
+    kwargs_with_unit       - dict. Format for regions with
+                             selected unit.
 
     Returns
     -------
-    box                      - polygon. The box we'll crop gdfs to.
-    map_extent               - list. [minx, maxx, miny, maxy]
-                               axis coordinates.
+    ax - plt.subplot(). Same as input with the boundaries drawn on.
     """
-    gdfs_to_merge = []
+    # Set up kwargs.
+    kwargs_nowt = {
+        'edgecolor': 'none',
+        'facecolor': 'none',
+    }
+    kwargs_periphery = {
+        'edgecolor': 'silver',
+        'facecolor': 'none',
+        'linewidth': 0.5,
+        'linestyle': '--'
+    }
+    kwargs_unit = {
+        'edgecolor': 'k',
+        'facecolor': 'none',
+        'linewidth': 0.5
+    }
+    # Update these with anything from the input dicts:
+    kwargs_nowt = kwargs_nowt | kwargs_with_nowt
+    kwargs_periphery = kwargs_periphery | kwargs_with_periphery
+    kwargs_unit = kwargs_unit | kwargs_with_unit
 
-    def filter_gdf(gdf, cols_to_filter):
-        # Pick out only rows where any cols are 1:
-        gdf = filter_gdf_by_columns(gdf, cols_to_filter)
-        # Keep only the 'geometry' column and name it 'geometry'
-        # (no MultiIndex):
-        gdf = gdf.reset_index()['geometry']
-        gdf.columns = ['geometry']
-        # Set the geometry column again:
-        gdf = gdf.set_geometry('geometry')
-        return gdf
-
-    # Regions.
-    # Pick out regions containing units:
-    gdf_regions_reduced = filter_gdf(gdf_boundaries_regions, ['contains_unit'])
-    gdfs_to_merge.append(gdf_regions_reduced)
-
-    # Units.
-    # Pick out units that have been selected or catch periphery LSOA.
-    gdf_units_reduced = filter_gdf(
-        gdf_points_units, ['selected', 'periphery_unit'])
-    gdfs_to_merge.append(gdf_units_reduced)
-
-    # LSOA catchment.
-    # Pick out catchment areas of units that have been selected
-    gdf_catchment_reduced = filter_gdf(gdf_boundaries_catchment, ['selected'])
-    gdfs_to_merge.append(gdf_catchment_reduced)
-
-    if gdf_lines_transfer is None:
-        pass
-    else:
-        # Transfer lines.
-        # Pick out catchment areas of units that have been selected
-        gdf_lines_reduced = filter_gdf(gdf_lines_transfer, ['selected'])
-        gdfs_to_merge.append(gdf_lines_reduced)
-
-    # Combine all of the reduced gdf:
-    gdf_combo = pd.concat(gdfs_to_merge, axis='rows', ignore_index=True)
-
-    # Convert from DataFrame to GeoDataFrame:
-    gdf_combo = geopandas.GeoDataFrame(
-        gdf_combo,
-        geometry='geometry',
-        crs=gdfs_to_merge[0].crs
-        )
-
-    box, map_extent = get_selected_area_extent(gdf_combo, leeway)
-    return box, map_extent
-
-
-def get_selected_area_extent(
-        gdf_selected,
-        leeway=10000,
-        ):
-    """
-    What is the spatial extent of everything in this GeoDataFrame?
-
-    Inputs
-    ------
-    gdf_selected - GeoDataFrame.
-    leeway       - float. Padding space around the edge of
-                   the plots from the outermost thing of
-                   interest. Units to match gdf units.
-
-    Returns
-    -------
-    box        - polygon. The box we'll crop gdfs to.
-    map_extent - list. [minx, maxx, miny, maxy] axis coordinates.
-    """
-    minx, miny, maxx, maxy = gdf_selected.geometry.total_bounds
-    # Give this some leeway:
-    minx -= leeway
-    miny -= leeway
-    maxx += leeway
-    maxy += leeway
-    map_extent = [minx, maxx, miny, maxy]
-    # Turn the points into a box:
-    box = Polygon((
-        (minx, miny),
-        (minx, maxy),
-        (maxx, maxy),
-        (maxx, miny),
-        (minx, miny),
-    ))
-    return box, map_extent
-
-
-def _keep_only_geometry_in_box(gdf, box):
-    """
-    Keep only rows of this gdf that intersect the box.
-
-    If a region is partly in and partly outside the box,
-    it will be included in the output gdf.
-
-    Inputs
-    ------
-    gdf - GeoDataFrame.
-    box - polygon.
-
-    Returns
-    -------
-    gdf - GeoDataFrame. Input data reduced to only rows that
-          intersect the box.
-    """
-    mask = gdf.geometry.intersects(box)
-    gdf = gdf[mask]
-    return gdf
-
-
-def _restrict_geometry_edges_to_box(gdf, box):
-    """
-    Clip polygons to the given box.
-
-    Inputs
-    ------
-    gdf - GeoDataFrame.
-    box - polygon.
-
-    Returns
-    -------
-    gdf - GeoDataFrame. Same as the input gdf but cropped so nothing
-          outside the box exists.
-    """
-    gdf.geometry = gdf.geometry.intersection(box)
-    return gdf
-
-
-def _assign_label_coords_to_regions(gdf, col_point_label):
-    """
-    Assign coordinates for labels of region short codes.
-
-    Inputs
-    ------
-    gdf             - GeoDataFrame.
-    col_point_label - name of the column to place coords in.
-
-    Returns
-    -------
-    gdf - GeoDataFrame. Same as input but with added coordinates.
-    """
-    # Get coordinates for where to plot each label:
-    point_label = ([poly.representative_point() for
-                    poly in gdf.geometry])
-    gdf[col_point_label] = point_label
-    return gdf
-
-
-# ###########################
-# ##### SETUP FOR PLOTS #####
-# ###########################
-def _setup_plot_map_outcome(
-        gdf_boundaries_lsoa,
-        scenario: str,
-        outcome: str,
-        boundary_kwargs={},
-        ):
-    """
-    Pick out colour scale properties for outcome map.
-
-    The required colour limits depend on the scenario type.
-    If it's a 'diff' scenario, we want to take shared colour limits
-    from only the other 'diff' scenarios and then use a symmetrical
-    colour map and limits. Otherwise we want to exclude the 'diff'
-    scenarios when finding shared colour limits.
-
-    Inputs
-    ------
-    gdf_boundaries_lsoa - GeoDataFrame. Contains outcomes by LSOA.
-    scenario            - str. Name of the scenario to be plotted.
-    outcome             - str. Name of the outcome measure to be plotted.
-    boundary_kwargs     - dict. Kwargs for the LSOA boundary plot
-                          call later.
-
-    Returns
-    -------
-    lsoa_boundary_kwargs - dict. Kwargs for the LSOA boundary plot
-                           call later including colour scale limits.
-    """
-    # Find shared outcome limits.
-    # Take only scenarios containing 'diff':
-    mask = gdf_boundaries_lsoa.columns.get_level_values(
-        'scenario').str.contains('diff')
-    if scenario.startswith('diff'):
-        pass
-    else:
-        # Take the opposite condition, take only scenarios
-        # not containing 'diff'.
-        mask = ~mask
-
-    mask = (
-        mask &
-        (gdf_boundaries_lsoa.columns.get_level_values('subtype') == 'mean') &
-        (gdf_boundaries_lsoa.columns.get_level_values('property') == outcome)
-    )
-    all_mean_vals = gdf_boundaries_lsoa.iloc[:, mask]
-    vlim_abs = all_mean_vals.abs().max().values[0]
-    vmax = all_mean_vals.max().values[0]
-    vmin = all_mean_vals.min().values[0]
-
-    # Currently the column also contains scenario
-    # but we'll drop that heading by the time this is plotted.
-    # col_outcome = find_multiindex_column_names(
-    #     gdf_boundaries_lsoa, scenario=[scenario], property=[outcome],
-    #     subtype=['mean'])
-    col_outcome = (outcome, 'mean')
-
-    lsoa_boundary_kwargs = {
-        'column': col_outcome,
-        'edgecolor': 'face',
-        # Adjust size of colourmap key, and add label
-        'legend_kwds': {
-            'shrink': 0.5,
-            'label': outcome
-            },
-        # Set to display legend
-        'legend': True,
-        }
-
-    cbar_diff = True if scenario.startswith('diff') else False
-    if cbar_diff:
-        lsoa_boundary_kwargs['cmap'] = 'seismic'
-        lsoa_boundary_kwargs['vmin'] = -vlim_abs
-        lsoa_boundary_kwargs['vmax'] = vlim_abs
-    else:
-        cmap = 'plasma'
-        if outcome == 'mRS shift':
-            # Reverse the colourmap because lower values
-            # are better for this outcome.
-            cmap += '_r'
-        lsoa_boundary_kwargs['cmap'] = cmap
-        lsoa_boundary_kwargs['vmin'] = vmin
-        lsoa_boundary_kwargs['vmax'] = vmax
-    # Update this with anything from the input dict:
-    lsoa_boundary_kwargs = lsoa_boundary_kwargs | boundary_kwargs
-
-    return lsoa_boundary_kwargs
-
-
-def make_colours_for_catchment(
-        gdf_boundaries_catchment,
-        colour_lists_units=[],
-        colour_list_periphery_units=[],
-        col_colour_ind='colour_ind',
-        col_transfer_colour_ind='transfer_colour_ind',
-        col_selected='selected',
-        col_use='use',
-        col_output_colour='colour',
-        col_output_colour_lines='colour_lines',
-        col_output_colour_periphery='colour_periphery'
-        ):
-    """
-    Assign colours to the catchment areas.
-
-    If the transfer unit information exists in gdf_boundaries_catchment
-    then colours will be chosen so that units sharing a transfer unit
-    will share a base colour and be assigned different shades.
-    Otherwise the same base colour is used for all catchment areas.
-
-    Inputs
-    ------
-    gdf_boundaries_catchment    - GeoDataFrame. Contains colour index.
-    colour_lists_units          - list. Cmaps or #rrggbbaa to be assigned.
-    colour_list_periphery_units - list. Cmaps or #rrggbbaa to be assigned
-                                  for periphery unit catchment areas.
-    col_colour_ind              - str / tuple. Column of colour index.
-    col_transfer_colour_ind     - str / tuple. Column of transfer unit
-                                  colour index.
-    col_selected                - str / tuple. Column of selected unit.
-    col_use                     - str / tuple. Column of "use" for this
-                                  scenario (different from "selected").
-    col_output_colour           - str / tuple. Column of resulting colour.
-    col_output_colour_lines     - str / tuple. Column of resulting colour
-                                  for other uses, e.g. transfer unit lines.
-    col_output_colour_periphery - str / tuple. Column of resulting colour
-                                  for periphery units.
-
-    Returns
-    -------
-    gdf_boundaries_catchment - GeoDataFrame. Same as input with added
-                               columns with colours.
-    """
-    def make_colour_list(cmap='Blues', inds_cmap=[0.2, 0.4, 0.6, 0.8]):
-        # Pick out colours from the cmap.
-        colour_list = plt.get_cmap(cmap)(inds_cmap)
-        # Convert from (0.0 to 1.0) to (0 to 255):
-        colour_list = (colour_list * 255.0).astype(int)
-        # Convert to string:
-        colour_list = np.array([
-            '#%02x%02x%02x%02x' % tuple(c) for c in colour_list])
-        return colour_list
-
-    # Pick sequential colourmaps that go from light (0.0) to dark (1.0).
-    # Don't include Greys because it's used for periphery units.
-    cmaps_list = [
-        'Blues', 'Greens', 'Oranges', 'Purples', 'Reds',
-        'YlOrBr', 'RdPu', 'BuGn', ' YlOrRd', 'BuPu',
-    ]
-    if len(colour_lists_units) == 0:
-        colour_lists_units = cmaps_list
-
-    mask = (gdf_boundaries_catchment[col_use] == 1)
-    n_colours = len(list(set(
-        gdf_boundaries_catchment.loc[mask, col_colour_ind])))
-
-    # Selected units.
-    # Start with blank colours:
-    colours_units = np.array(['#00000000'] * len(gdf_boundaries_catchment))
-    colours_transfer = np.array(['#00000000'] * len(gdf_boundaries_catchment))
-    colours_periphery = np.array(['#00000000'] * len(gdf_boundaries_catchment))
-
-    if col_transfer_colour_ind in gdf_boundaries_catchment.columns:
-        # Use a different colour map for each MT unit and its feeders.
-        gdf_boundaries_catchment = gdf_boundaries_catchment.copy()
-        gdf_boundaries_catchment = gdf_boundaries_catchment.sort_values(
-            col_selected, ascending=False)
-        # Mask to basically select "use" only, but also the periphery
-        # units have NaN instead of an integer value in this column
-        # so use isna() to exclude those.
-        mask = ~gdf_boundaries_catchment[col_transfer_colour_ind].isna()
-        bands = list(gdf_boundaries_catchment.loc[
-            mask, col_transfer_colour_ind].dropna().unique())
-
-        for b, band in enumerate(bands):
-            try:
-                cmap = colour_lists_units[b]
-                colour_list_units = make_colour_list(
-                    cmap=cmap, inds_cmap=np.linspace(0.2, 0.8, n_colours))
-                # Pick out a dark colour for transfer unit line:
-                colour_transfer = make_colour_list(
-                    cmap=cmap, inds_cmap=[0.95])[0]
-            except ValueError:
-                # No colourmap of that name.
-                colour_list_units = colour_lists_units[b][:-1]
-                colour_transfer = colour_lists_units[b][-1]
-            # Pick out only the areas in this band:
-            mask = (
-                (gdf_boundaries_catchment[col_transfer_colour_ind] == band) &
-                (gdf_boundaries_catchment[col_use] == 1)
+    # Regions containing neither LSOAs nor stroke units here:
+    try:
+        mask = (
+            (gdf_boundaries_regions['contains_unit'] == 0) &
+            (gdf_boundaries_regions['contains_periphery_lsoa'] == 0) &
+            (gdf_boundaries_regions['contains_periphery_unit'] == 0)
             )
-            # Assign colours by colour index column values:
-            inds = gdf_boundaries_catchment.loc[
-                mask, col_colour_ind].astype(int).values
-            colours_units[np.where(mask == 1)[0]] = colour_list_units[inds]
-            colours_transfer[np.where(mask == 1)[0]] = colour_transfer
-    else:
-        try:
-            cmap = colour_lists_units[0]
-            colour_list_units = make_colour_list(
-                cmap=cmap, inds_cmap=np.linspace(0.2, 0.8, n_colours))
-            # Pick out a dark colour for transfer unit line:
-            colour_transfer = make_colour_list(
-                cmap=cmap, inds_cmap=[0.95])[0]
-        except ValueError:
-            # No colourmap of that name.
-            colour_list_units = colour_lists_units[b][:-1]
-            colour_transfer = colour_lists_units[b][-1]
-        # Assign colours by colour index column values:
-        colours_units = colour_list_units[
-            gdf_boundaries_catchment[col_colour_ind].astype(int).values]
-        colours_transfer = np.array(
-            [colour_transfer] * len(gdf_boundaries_catchment))
-
-    # Place in the GeoDataFrame:
-    gdf_boundaries_catchment[col_output_colour] = colours_units
-    gdf_boundaries_catchment[col_output_colour_lines] = colours_transfer
-
-    # Periphery units
-    if len(colour_list_periphery_units) == 0:
-        colour_list_periphery_units = make_colour_list(
-            cmap='Greys', inds_cmap=np.linspace(0.2, 0.8, n_colours))
+    except KeyError:
+        # Assume the LSOA column doesn't exist.
+        mask = (
+            (gdf_boundaries_regions['contains_unit'] == 0)
+        )
+    gdf_boundaries_with_nowt = gdf_boundaries_regions.loc[mask]
+    if len(gdf_boundaries_with_nowt) > 0:
+        ax = draw_boundaries(
+            ax, gdf_boundaries_with_nowt,
+            **kwargs_nowt
+            )
+        # Make these invisible but draw them anyway to make sure the
+        # extent of the map is similar to other runs.
     else:
         pass
-    mask = ~gdf_boundaries_catchment[col_colour_ind].isna()
-    # Assign colours by colour index column values:
-    colours_periphery[np.where(mask == 1)[0]] = colour_list_periphery_units[
-        gdf_boundaries_catchment.loc[mask, col_colour_ind].astype(int).values]
-    # Place in the GeoDataFrame:
-    gdf_boundaries_catchment[col_output_colour_periphery] = colours_periphery
-    return gdf_boundaries_catchment
+
+    # Regions containing LSOAs but not selected stroke units:
+    # For now, treat extra regions the same regardless of whether
+    # they contain an extra stroke unit or catch the LSOA.
+    try:
+        mask = (
+            (gdf_boundaries_regions['contains_unit'] == 0) &
+            ((gdf_boundaries_regions['contains_periphery_lsoa'] == 1) |
+             (gdf_boundaries_regions['contains_periphery_unit'] == 1))
+        )
+    except KeyError:
+        # Try again without the unit-catching column.
+        try:
+            mask = (
+                (gdf_boundaries_regions['contains_unit'] == 0) &
+                (gdf_boundaries_regions['contains_periphery_lsoa'] == 1)
+            )
+        except KeyError:
+            # Assume the LSOA column doesn't exist. Don't plot this.
+            mask = [False] * len(gdf_boundaries_regions)
+
+    gdf_boundaries_with_lsoa = gdf_boundaries_regions.loc[mask]
+    if len(gdf_boundaries_with_lsoa) > 0:
+        ax = draw_boundaries(
+            ax, gdf_boundaries_with_lsoa,
+            **kwargs_periphery
+            )
+    else:
+        pass
+
+    # Regions containing selected stroke units:
+    mask = (gdf_boundaries_regions['contains_unit'] == 1)
+    gdf_boundaries_with_units = gdf_boundaries_regions.loc[mask]
+    if len(gdf_boundaries_with_units) > 0:
+        ax = draw_boundaries(
+            ax, gdf_boundaries_with_units,
+            **kwargs_unit
+            )
+    else:
+        pass
+    return ax
 
 
-def drop_other_scenarios(df, scenario):
+def draw_boundaries(ax, gdf, **kwargs):
     """
-    Remove other scenarios and the 'scenario' column heading from df.
+    Draw regions from a GeoDataFrame.
 
     Inputs
     ------
-    df       - GeoDataFrame. Contains a column MultiIndex with a
-               'scenario' level.
-    scenario - str. Name of the scenario to keep.
+    ax     - pyplot axis. Where to draw the regions.
+    gdf    - GeoDataFrame. Stores geometry to be plotted.
+    kwargs - dict. Keyword arguments to pass to plt.plot().
 
     Returns
     -------
-    df_selected - GeoDataFrame. Subset of the input dataframe with
-                  only the selected scenario and the 'scenario' level
-                  removed.
+    ax - pyplot axis. Same as input but with regions drawn on.
     """
-    scenario_list = list(set(df.columns.get_level_values('scenario')))
-    scenarios_to_keep = [s for s in scenario_list if (
-        (s == scenario) |
-        (s == '') |
-        (s == 'any') |
-        (s.startswith('Unnamed'))
-    )]
-
-    # Which columns do we want?
-    cols = df.columns.get_level_values('scenario').isin(scenarios_to_keep)
-    # Subset of only these columns:
-    df_selected = df.loc[:, cols].copy()
-
-    # Drop the 'scenario' column level:
-    df_selected = df_selected.droplevel('scenario', axis='columns')
-    # Set geometry:
-    col_geometry = find_multiindex_column_names(
-        df_selected, property=['geometry'])
-    df_selected = df_selected.set_geometry(col_geometry)
-
-    return df_selected
+    # Draw the main map with colours (choropleth):
+    gdf.plot(
+        ax=ax,              # Set which axes to use for plot (only one here)
+        antialiased=False,  # Avoids artefact boundary lines
+        **kwargs
+        )
+    return ax
 
 
-# #######################
-# ##### PYPLOT MAPS #####
-# #######################
+def scatter_units(
+        ax,
+        gdf,
+        return_handle=False,
+        **kwargs
+        ):
+    """
+    Draw scatter markers for IVT stroke units.
+
+    If gdf has a column named 'marker', its contents will be used
+    to assign shapes to the markers.
+
+    Inputs
+    ------
+    ax            - pyplot axis. Where to draw the scatter markers.
+    gdf           - GeoDataFrame. Stores stroke unit coordinates
+                    and services.
+    return_handle - bool. Whether to return the scatter marker
+                    handles for making a legend later.
+    kwargs        - dict. kwargs for plt.scatter().
+
+    Returns
+    -------
+    ax - pyplot axis. Same as input but with scatter markers.
+    """
+    kwargs_dict = dict(
+        edgecolor='none',
+        facecolor='LightCoral',
+        linewidth=0.5,
+        s=50,
+        marker='o',
+        zorder=2
+    )
+
+    # Overwrite default dict with user inputs:
+    for key, val in kwargs.items():
+        kwargs_dict[key] = val
+
+    # Keep a copy of some defaults:
+    default_marker_size = kwargs_dict['s']
+    default_marker = kwargs_dict['marker']
+    # facecolour = kwargs_dict['facecolor']
+
+    # Create an ellipse marker by taking the standard circle
+    # and stretching the x-coordinates.
+    circle = mpath.Path.unit_circle()
+    verts = np.copy(circle.vertices)
+    verts[:, 0] *= 2.0
+    ellipse = mpath.Path(verts, circle.codes)
+
+    # Create a star marker by taking the standard star and pushing
+    # out all coordinates away from the centre.
+    star = mpath.Path.unit_regular_star(numVertices=5)
+    verts = np.copy(star.vertices)
+    radii = np.sqrt(verts[:, 0]**2.0 + verts[:, 1]**2.0)
+    # Radii are either 0.5 (inner corner) or 1.0 (outer point).
+    scale = 0.7 * (1.0 / radii)
+    scale = np.sqrt(scale)
+    verts[:, 0] = verts[:, 0] * scale
+    verts[:, 1] = verts[:, 1] * scale
+    # Also squash the y-axis down a bit:
+    verts[:, 1] = verts[:, 1] * 0.75
+    star_squash = mpath.Path(verts, star.codes)
+
+    if return_handle:
+        # Draw each point separately for use with the legend later.
+
+        # Need a separate call for each when there is
+        # an array of marker shapes.
+        handles = []
+        for row in gdf.index:
+            gdf_m = gdf.loc[[row]]
+            # col_geometry = find_multiindex_column_names(
+            #     gdf_m, property=['geometry'])
+            col_geometry = 'geometry'
+            # Update marker shape and size:
+            try:
+                # col_marker = find_multiindex_column_names(
+                #     gdf_m, property=['marker'])
+                col_marker = 'marker'
+                marker = gdf_m[col_marker].values[0]
+                kwargs_dict['marker'] = marker
+            except KeyError:
+                kwargs_dict['s'] = default_marker_size
+                kwargs_dict['marker'] = default_marker
+
+            if kwargs_dict['marker'] == '*':
+                # Make the star bigger.
+                kwargs_dict['s'] = 150
+                kwargs_dict['marker'] = star_squash
+            elif kwargs_dict['marker'] == 'o':
+                kwargs_dict['s'] = 150
+                kwargs_dict['marker'] = ellipse
+
+            handle = ax.scatter(
+                gdf_m[col_geometry].x,
+                gdf_m[col_geometry].y,
+                **kwargs_dict
+                )
+            handles.append(handle)
+        return ax, handles
+    else:
+
+        # col_geometry = find_multiindex_column_names(
+        #     gdf, property=['geometry'])
+        col_geometry = 'geometry'
+        # Draw all points in one call.
+        ax.scatter(
+            gdf[col_geometry].x,
+            gdf[col_geometry].y,
+            **kwargs_dict
+            )
+        return ax
+
+
+def plot_lines_between_units(ax, gdf, **line_kwargs):
+    """
+    Draw lines from stroke units to their MT transfer units.
+
+    Inputs
+    ------
+    ax          - pyplot axis. Where to draw the scatter markers.
+    gdf         - GeoDataFrame. Stores LineString objects that connect
+                  each stroke unit to its MT transfer unit.
+    line_kwargs - dict. Kwargs for plt.plot().
+
+    Returns
+    -------
+    ax - pyplot axis. Same as input but with scatter markers.
+    """
+    kwargs_dict = dict(
+        edgecolor='k',
+        linestyle='-',
+        linewidth=2,
+        zorder=1  # Place it beneath the scatter markers.
+    )
+
+    # Overwrite default dict with user inputs:
+    for key, val in line_kwargs.items():
+        kwargs_dict[key] = val
+
+    # Draw a line connecting each unit to its MT unit.
+    mask = gdf['selected'] == 1
+    lines = gdf[mask]
+
+    if 'colour_lines' in lines.columns:
+        edgecolour = kwargs_dict['edgecolor']
+        # Different colour for each line.
+        for row in lines.index:
+            gdf_m = lines.loc[[row]]
+            if len(gdf_m['colour_lines'].values[0]) < 7:
+                # Not in the format #rrggbb or #rrggbbaa.
+                # Use input default value.
+                colour = edgecolour
+            else:
+                colour = gdf_m['colour_lines']
+            kwargs_dict['edgecolor'] = colour
+            # Plot this single line as usual:
+            gdf_m.plot(
+                ax=ax,
+                **kwargs_dict
+            )
+    else:
+        lines.plot(
+            ax=ax,
+            **kwargs_dict
+        )
+    return ax
+
+
+def draw_labels_short(
+        ax,
+        points,
+        map_labels,
+        leg_labels,
+        colours=[],
+        **kwargs
+        ):
+    """
+    Draw labels from the geodataframe.
+
+    Inputs
+    ------
+    ax         - plt.subplot().
+    points     - pd.Series. Geometry of Points.
+    map_labels - pd.Series. Text for the scatter markers.
+    leg_labels - pd.Series. Text for legend entries.
+    colours    - pd.Series. #rrggbbaa strings for label colour.
+    **kwargs   - dict. kwargs for plt.scatter().
+
+    Returns
+    -------
+    ax                 - plt.subplot(). Input axis with labels drawn on.
+    markers_for_legend - List of handles for making a legend.
+    labels_for_legend  - List of labels for the legend.
+    """
+    marker_kwargs = dict(
+        s=8,
+        edgecolor='none',  # to prevent border around text
+        color='k'
+    )
+    # Update this with anything from the input dict:
+    marker_kwargs = marker_kwargs | kwargs
+
+    ref_s = marker_kwargs['s']
+
+    font = font_manager.FontProperties()
+    file = font_manager.findfont(font)
+    font = ImageFont.truetype(file, marker_kwargs['s'])
+
+    markers_for_legend = []
+    labels_for_legend = []
+
+    if len(colours) == 0:
+        colours = [marker_kwargs['color']] * len(points)
+
+    # Define "z" to shorten following "for" line:
+    z = zip(
+        points.x,
+        points.y,
+        map_labels,
+        leg_labels,
+        colours
+        )
+    for x, y, map_label, leg_label, colour in z:
+        # Adjust label size based on its width.
+        # Only need the ratio of height to width,
+        # so find that for the same font outside the plot:
+        left, top, right, bottom = font.getbbox(map_label)
+        ref_height = bottom - top  # Yes really
+        ref_width = right - left
+        if ref_height >= ref_width:
+            # If the label is taller than it is wide,
+            # just use the normal marker size:
+            s = ref_s
+        else:
+            # The label is too wide.
+            # Using the reference s will mean the text is shrunk.
+            # Scale up the marker size so that its height matches
+            # the reference marker height
+            # (squared because s is an area):
+            s = ref_s * (ref_width / ref_height)**2.0
+        # Update the kwargs with this marker size:
+        marker_kwargs['s'] = s
+        marker_kwargs['color'] = colour
+
+        m = ax.scatter(
+            x, y,
+            marker=r'$\mathdefault{' + f'{map_label}' + '}$',
+            zorder=5,
+            **marker_kwargs
+        )
+        markers_for_legend.append(m)
+        labels_for_legend.append(leg_label)
+    return ax, markers_for_legend, labels_for_legend
+
+
+def plot_dummy_axis(fig, ax, leg, side='left'):
+    """
+    Add dummy invisible axis to the side of an existing axis.
+
+    So that extra_artists are not cut off when plt.show() crops.
+
+    For now this assumes that the new axis should be anchored to
+    "upper right" for new axis on left-hand-side and
+    "upper left" for new axis on right-hand-side.
+    For other options, make new if/else settings below.
+
+    Inputs
+    ------
+    fig  - plt.figure().
+    ax   - plt.subplot().
+    leg  - plt.legend().
+    side - str. Whether to place legend on the 'left' or 'right'.
+
+    Returns
+    -------
+    fig - plt.figure(). Input fig extended to make room for legend.
+    """
+    # Current axis:
+    abox = ax.get_window_extent().transformed(
+        ax.figure.transFigure.inverted())
+    x0 = abox.x0
+    y0 = abox.y0
+    width = abox.width
+    height = abox.height
+
+    # The size of the legend or other thing to make a dummy of:
+    tbox = leg.get_window_extent().transformed(
+        ax.figure.transFigure.inverted())
+
+    new_width = tbox.width
+    new_height = tbox.height
+    if side == 'left':
+        # Left-hand-side:
+        new_x0 = x0 - tbox.width
+        new_y0 = (y0 + height) - (tbox.height)
+    else:
+        # Right-hand-side:
+        new_x0 = x0 + width
+        new_y0 = (y0 + height) - (tbox.height)
+
+    # Axes: [x0, y0, width, height].
+    c = fig.add_axes([new_x0, new_y0, new_width, new_height])
+    c.set_axis_off()
+    return fig
+
+
+# ######################
+# ##### MAIN PLOTS #####
+# ######################
 def plot_map_selected_regions(
         gdf_boundaries_regions,
         gdf_points_units,
-        scenario: str,
-        map_extent=[],
-        path_to_file='',
-        show=True
+        ax=None,
+        map_extent=[]
         ):
     """
-    Plot a map labelling selected and nearby regions and units.
-
-    +---+ +---------+ +---+    1 - Legend for units, selected / other.
-    | 1 | |    2    | | 3 |    2 - Map with regions and units.
-    +---+ +---------+ +---+    3 - Legend for regions, selected / other.
+    Make map of the selected regions and any units.
 
     Inputs
     ------
     gdf_boundaries_regions - GeoDataFrame.
     gdf_points_units       - GeoDataFrame.
-    scenario               - str. Name of scenario to use.
+    ax                     - plt.subplot().
     map_extent             - list. Axis limits [xmin, xmax, ymin, ymax].
-    path_to_file           - str. Save the image here.
-    show                   - bool. Whether to plt.show().
+
+    Returns
+    -------
+    ax            - plt.subplot(). Input ax with bits drawn on.
+    extra_artists - list. Extra legends drawn on with plt.add_artist().
     """
-    # Drop everything that belongs to other scenarios:
-    gdf_boundaries_regions = drop_other_scenarios(
-        gdf_boundaries_regions, scenario)
-    gdf_points_units = drop_other_scenarios(
-        gdf_points_units, scenario)
 
-    fig, ax = plt.subplots(figsize=(8, 5))
+    # Set up kwargs
+    kwargs_with_unit = {
+        'edgecolor': 'DimGray',
+        'linewidth': 0.5,
+        'facecolor': 'Gainsboro'
+    }
+    kwargs_with_nowt = {
+        'edgecolor': 'silver',
+        'linewidth': 0.5,
+        'facecolor': 'WhiteSmoke'
+        }
 
-    ax, extra_artists = maps.plot_map_selected_regions(
+    label_size_units = 15
+    label_size_regions = 30
+
+    if ax is None:
+        # Make max dimensions XxY inch:
+        fig, ax = plt.subplots(figsize=(12, 8))
+
+    ax = draw_boundaries_by_contents(
+        ax,
         gdf_boundaries_regions,
-        gdf_points_units,
-        ax=ax,
-        map_extent=map_extent
+        kwargs_with_nowt=kwargs_with_nowt,
+        kwargs_with_periphery=kwargs_with_nowt,
+        kwargs_with_unit=kwargs_with_unit,
+        )
+
+    # In selected regions:
+    col_selected = find_multiindex_column_names(
+        gdf_points_units, property=['selected'])
+    mask = gdf_points_units[col_selected] == 1
+    ax, handles_scatter_us = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        return_handle=True,
+        edgecolor='k',
+        )
+    # Outside selected regions:
+    mask = ~mask
+    ax, handles_scatter_uns = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        facecolor='Pink',
+        return_handle=True,
+        edgecolor='DimGray',
+        )
+
+    # Label units:
+    # In selected regions:
+    mask = gdf_points_units[col_selected] == 1
+    col_geometry = find_multiindex_column_names(
+        gdf_points_units, property=['geometry'])
+    col_short_code = find_multiindex_column_names(
+        gdf_points_units, property=['short_code'])
+    col_stroke_team = find_multiindex_column_names(
+        gdf_points_units, property=['stroke_team'])
+    ax, handles_us, labels_us = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        color='k',
+        # bbox=dict(facecolor='WhiteSmoke', edgecolor='r'),
+    )
+    # Outside selected regions:
+    mask = ~mask
+    ax, handles_uns, labels_uns = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        color='DimGray',
     )
 
-    if path_to_file is None:
+    # Label regions:
+    # Change geometry so that we can use the point coordinates
+    # in the following label function:
+    gdf_boundaries_regions = gdf_boundaries_regions.set_geometry('point_label')
+    # In selected regions:
+    mask = gdf_boundaries_regions['contains_unit'] == 1
+    ax, handles_rs, labels_rs = draw_labels_short(
+        ax,
+        gdf_boundaries_regions[mask].point_label,
+        gdf_boundaries_regions[mask].short_code,
+        gdf_boundaries_regions[mask].region,
+        # weight='bold',
+        s=label_size_regions,
+        color='k'
+    )
+    # Outside selected regions:
+    mask = ~mask
+    ax, handles_rns, labels_rns = draw_labels_short(
+        ax,
+        gdf_boundaries_regions[mask].point_label,
+        gdf_boundaries_regions[mask].short_code,
+        gdf_boundaries_regions[mask].region,
+        # weight='bold',
+        s=label_size_regions,
+        color='DimGray'
+    )
+
+    # Add legends.
+
+    # Regions:
+    # Add a blank handle and a section label:
+    section_labels = ['Regions with selected units' + ' ' * 60 + '.',
+                      'Other regions']
+    handles_r, labels_r = combine_legend_sections(
+        section_labels,
+        [handles_rs, handles_rns],
+        [labels_rs, labels_rns]
+        )
+    # Create the legend from the lists:
+    leg1 = ax.add_artist(plt.legend(
+        handles_r, labels_r, fontsize=6,
+        bbox_to_anchor=[1.0, 1.0],
+        loc='upper left'
+        ))
+    leg1 = set_legend_section_labels_to_bold(
+        leg1, section_labels, labels_r)
+
+    # Units:
+    if len(labels_uns) > 0:
+        section_labels = ['Selected units' + ' ' * 70 + '.',
+                          'Other units']
+        handles_lists = [
+            [handles_scatter_us, handles_us],
+            [handles_scatter_uns, handles_uns]
+        ]
+        labels_lists = [labels_us, labels_uns]
+    else:
+        section_labels = ['Selected units' + ' ' * 70 + '.']
+        handles_lists = [
+            [handles_scatter_us, handles_us]
+        ]
+        labels_lists = [labels_us]
+
+    leg2 = create_units_legend(
+        ax,
+        handles_lists,
+        labels_lists,
+        section_labels,
+        fontsize=6,
+        bbox_to_anchor=[0.0, 1.0],
+        loc='upper right'
+        )
+
+    if len(map_extent) > 0:
+        # Limit to given extent:
+        ax.set_xlim(map_extent[0], map_extent[1])
+        ax.set_ylim(map_extent[2], map_extent[3])
+    else:
+        # Use default axis limits.
         pass
-    else:
-        # Include extra artists so that bbox_inches='tight' line
-        # in savefig() doesn't cut off the legends.
-        # Adding legends with ax.add_artist() means that the
-        # bbox_inches='tight' line ignores them.
-        plt.savefig(
-            path_to_file,
-            bbox_extra_artists=extra_artists,
-            dpi=300, bbox_inches='tight'
-            )
-    if show:
-        # Add dummy axis to the sides so that
-        # extra_artists are not cut off when plt.show() crops.
-        fig = maps.plot_dummy_axis(fig, ax, extra_artists[1], side='left')
-        fig = maps.plot_dummy_axis(fig, ax, extra_artists[0], side='right')
-        plt.show()
-    else:
-        plt.close()
+
+    ax.set_axis_off()  # Turn off axis line and numbers
+
+    # Return extra artists so that bbox_inches='tight' line
+    # in savefig() doesn't cut off the legends.
+    # Adding legends with ax.add_artist() means that the
+    # bbox_inches='tight' line ignores them.
+    extra_artists = (leg1, leg2)
+
+    return ax, extra_artists
 
 
 def plot_map_selected_units(
         gdf_boundaries_regions,
         gdf_points_units,
         gdf_lines_transfer,
-        scenario: str,
+        ax=None,
         map_extent=[],
-        path_to_file='',
-        show=True
         ):
     """
-    Plot a map labelling selected and nearby units and transfers.
-
-    +---+ +---------+    1 - Legend for units, selected / other.
-    | 1 | |    2    |    2 - Map with regions, units, transfer lines.
-    +---+ +---------+
+    Make map of the selected units and the regions containing them.
 
     Inputs
     ------
     gdf_boundaries_regions - GeoDataFrame.
     gdf_points_units       - GeoDataFrame.
     gdf_lines_transfer     - GeoDataFrame.
-    scenario               - str. Name of scenario to use.
+    ax                     - plt.subplot().
     map_extent             - list. Axis limits [xmin, xmax, ymin, ymax].
-    path_to_file           - str. Save the image here.
-    show                   - bool. Whether to plt.show().
+
+    Returns
+    -------
+    ax            - plt.subplot(). Input ax with bits drawn on.
+    extra_artists - list. Extra legends drawn on with plt.add_artist().
     """
-    # Drop everything that belongs to other scenarios:
-    gdf_boundaries_regions = drop_other_scenarios(
-        gdf_boundaries_regions, scenario)
-    gdf_points_units = drop_other_scenarios(gdf_points_units, scenario)
-    gdf_lines_transfer = drop_other_scenarios(gdf_lines_transfer, scenario)
+    # Set up kwargs.
+    # Region boundaries:
+    kwargs_region_with_unit = {
+        'edgecolor': 'DimGray',
+        'linewidth': 0.5,
+        'facecolor': 'Gainsboro'
+        }
+    kwargs_region_with_nowt = {
+        'edgecolor': 'silver',
+        'linewidth': 0.5,
+        'facecolor': 'WhiteSmoke'
+        }
+    label_size_units = 15
 
-    fig, ax = plt.subplots(figsize=(6, 5))
+    if ax is None:
+        # Make max dimensions XxY inch:
+        fig, ax = plt.subplots(figsize=(12, 8))
 
-    ax, extra_artists = maps.plot_map_selected_units(
+    ax = draw_boundaries_by_contents(
+        ax,
         gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_lines_transfer,
-        ax=ax,
-        map_extent=map_extent,
+        kwargs_with_nowt=kwargs_region_with_nowt,
+        kwargs_with_periphery=kwargs_region_with_nowt,
+        kwargs_with_unit=kwargs_region_with_unit,
+        # kwargs_selected=kwargs_selected,
+        # kwargs_not_selected=kwargs_not_selected
+        )
+
+    # Set up markers using a new column in DataFrame.
+    # Set everything to the IVT marker:
+    markers = np.full(len(gdf_points_units), 'o')
+    # Update MT units:
+    col_use_mt = find_multiindex_column_names(
+        gdf_points_units, property=['use_mt'])
+    mask_mt = (gdf_points_units[col_use_mt] == 1)
+    markers[mask_mt] = '*'
+    # Store in the DataFrame:
+    gdf_points_units['marker'] = markers
+
+    # In selected regions:
+    col_selected = find_multiindex_column_names(
+        gdf_points_units, property=['selected'])
+    mask = gdf_points_units[col_selected] == 1
+    ax, handles_scatter_us = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        return_handle=True,
+        facecolor='WhiteSmoke',
+        edgecolor='k'
+        )
+    # Outside selected regions:
+    mask = gdf_points_units[col_selected] == 0
+    ax, handles_scatter_uns = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        facecolor='WhiteSmoke',
+        edgecolor='DimGray',
+        return_handle=True
+        )
+
+    # Label units:
+    # In selected regions:
+    mask = gdf_points_units[col_selected] == 1
+    col_geometry = find_multiindex_column_names(
+        gdf_points_units, property=['geometry'])
+    col_short_code = find_multiindex_column_names(
+        gdf_points_units, property=['short_code'])
+    col_stroke_team = find_multiindex_column_names(
+        gdf_points_units, property=['stroke_team'])
+    col_colour_lines = find_multiindex_column_names(
+        gdf_points_units, property=['colour_lines'])
+    ax, handles_us, labels_us = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        colours=gdf_points_units.loc[mask, col_colour_lines],
+        # color='k',
+        # bbox=dict(facecolor='WhiteSmoke', edgecolor='r'),
+    )
+    # Outside selected regions:
+    mask = ~mask
+    ax, handles_uns, labels_uns = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        color='DimGray',
+        # bbox=dict(facecolor='GhostWhite', edgecolor='DimGray'),
     )
 
-    if path_to_file is None:
+    # Units:
+    if len(labels_uns) > 0:
+        section_labels = ['Selected units' + ' ' * 70 + '.', 'Other units']
+        handles_lists = [
+            [handles_scatter_us, handles_us],
+            [handles_scatter_uns, handles_uns]
+        ]
+        labels_lists = [labels_us, labels_uns]
+    else:
+        section_labels = ['Selected units' + ' ' * 70 + '.']
+        handles_lists = [
+            [handles_scatter_us, handles_us]
+        ]
+        labels_lists = [labels_us]
+
+    leg = create_units_legend(
+        ax,
+        handles_lists,
+        labels_lists,
+        section_labels,
+        fontsize=6,
+        bbox_to_anchor=[0.0, 1.0],
+        loc='upper right'
+        )
+
+    ax = plot_lines_between_units(
+        ax,
+        gdf_lines_transfer,
+        edgecolor='LightCoral'
+        )
+
+    if len(map_extent) > 0:
+        # Limit to given extent:
+        ax.set_xlim(map_extent[0], map_extent[1])
+        ax.set_ylim(map_extent[2], map_extent[3])
+    else:
+        # Use default axis limits.
         pass
-    else:
-        # Include extra artists so that bbox_inches='tight' line
-        # in savefig() doesn't cut off the legends.
-        # Adding legends with ax.add_artist() means that the
-        # bbox_inches='tight' line ignores them.
-        plt.savefig(
-            path_to_file,
-            bbox_extra_artists=extra_artists,
-            dpi=300, bbox_inches='tight'
-            )
-    if show:
-        # Add dummy axis to the sides so that
-        # extra_artists are not cut off when plt.show() crops.
-        fig = maps.plot_dummy_axis(fig, ax, extra_artists[0], side='left')
-        plt.show()
-    else:
-        plt.close()
+
+    ax.set_axis_off()  # Turn off axis line and numbers
+
+    extra_artists = (leg, )  # Has to be a tuple.
+
+    return ax, extra_artists
 
 
 def plot_map_catchment(
         gdf_boundaries_catchment,
-        gdf_boundaries_regions,
+        gdf_boundaries_regions,  # TO DO - make this optional...?
         gdf_points_units,
         gdf_lines_transfer,
-        scenario: str,
-        title='',
-        lsoa_boundary_kwargs={},
-        lsoa_boundary_periphery_kwargs={},
+        ax=None,
         map_extent=[],
-        show=True,
-        path_to_file=''
+        boundary_kwargs={},
+        boundary_periphery_kwargs={}
+        # catchment_type=''
         ):
     """
-    Plot a map of unit catchment areas.
-
-    +---+ +---------+    1 - Legend for units, selected / other.
-    | 1 | |    2    |    2 - Map with regions, units, transfer lines,
-    +---+ +---------+        catchment areas.
+    Map the selected units, containing regions, and catchment areas.
 
     Inputs
     ------
-    gdf_boundaries_catchment - GeoDataFrame.
-    gdf_boundaries_regions   - GeoDataFrame.
-    gdf_points_units         - GeoDataFrame.
-    gdf_lines_transfer       - GeoDataFrame.
-    scenario                 - str. Name of scenario to use.
-    title                    - str. Title of the axis.
-    lsoa_boundary_kwargs     - dict. Kwargs for plotting catchment areas.
-    lsoa_boundary_periphery_kwargs - dict. Kwargs for periphery areas.
-    map_extent               - list. Axis limits [xmin, xmax, ymin, ymax].
-    path_to_file             - str. Save the image here.
-    show                     - bool. Whether to plt.show().
+    gdf_boundaries_catchment  - GeoDataFrame.
+    gdf_boundaries_regions    - GeoDataFrame.
+    gdf_points_units          - GeoDataFrame.
+    gdf_lines_transfer        - GeoDataframe.
+    ax                        - plt.subplot().
+    map_extent                - list. Axis limits [xmin, xmax, ymin, ymax].
+    boundary_kwargs           - dict. Kwargs for plt.plot() for
+                                catchment areas.
+    boundary_periphery_kwargs - dict. Kwargs for plt.plot() for
+                                periphery catchment areas.
+
+    Returns
+    -------
+    ax            - plt.subplot(). Input ax with bits drawn on.
+    extra_artists - list. Extra legends drawn on with plt.add_artist().
     """
-    # Drop everything that belongs to other scenarios:
-    gdf_boundaries_regions = drop_other_scenarios(
-        gdf_boundaries_regions, scenario)
-    gdf_points_units = drop_other_scenarios(gdf_points_units, scenario)
-    gdf_lines_transfer = drop_other_scenarios(gdf_lines_transfer, scenario)
-    gdf_boundaries_catchment = drop_other_scenarios(
-        gdf_boundaries_catchment, scenario)
-    # Drop catchment areas from other scenarios:
-    gdf_boundaries_catchment = gdf_boundaries_catchment.dropna(
-        subset='colour_ind')
+    label_size_units = 15
 
-    boundary_kwargs = {'edgecolor': 'face'}
-    # Update this with anything from the input dict:
-    lsoa_boundary_kwargs = boundary_kwargs | lsoa_boundary_kwargs
+    if ax is None:
+        # Make max dimensions XxY inch:
+        fig, ax = plt.subplots(figsize=(12, 8))
 
-    boundary_periphery_kwargs = {'edgecolor': 'face'}
-    # Update this with anything from the input dict:
-    lsoa_boundary_periphery_kwargs = (boundary_periphery_kwargs |
-                                      lsoa_boundary_periphery_kwargs)
+    # LSOAs in selected units catchment:
+    col_selected = find_multiindex_column_names(
+        gdf_boundaries_catchment, property=['selected'])
+    col_periphery_unit = find_multiindex_column_names(
+        gdf_boundaries_catchment, property=['periphery_unit'])
+    col_colour = find_multiindex_column_names(
+        gdf_boundaries_catchment, property=['colour'])
+    mask = (gdf_boundaries_catchment[col_selected] == 1)
+    ax = draw_boundaries(
+        ax,
+        gdf_boundaries_catchment.loc[mask],
+        color=gdf_boundaries_catchment.loc[mask, col_colour],
+        **boundary_kwargs
+        )
 
-    fig, ax = plt.subplots(figsize=(6, 5))
-    ax.set_title(title)
+    # LSOAs in periphery units catchment:
+    mask = (
+        (gdf_boundaries_catchment[col_selected] == 0) &
+        (gdf_boundaries_catchment[col_periphery_unit] == 1)
+    )
+    col_colour_periphery = find_multiindex_column_names(
+        gdf_boundaries_catchment, property=['colour_periphery'])
+    ax = draw_boundaries(
+        ax,
+        gdf_boundaries_catchment[mask],
+        color=gdf_boundaries_catchment.loc[mask, col_colour_periphery],
+        **boundary_periphery_kwargs
+        )
 
-    ax, extra_artists = maps.plot_map_catchment(
-        gdf_boundaries_catchment,
+    # Region boundaries:
+    kwargs_region_with_unit = {
+        'edgecolor': 'k',
+        'linewidth': 0.5,
+        'facecolor': 'none'
+        }
+    kwargs_region_with_lsoa = {
+        'edgecolor': 'silver',
+        'linewidth': 0.5,
+        'facecolor': 'none'
+        }
+    kwargs_region_with_nowt = {
+        'edgecolor': 'none',
+        'facecolor': 'none'
+        }
+
+    ax = draw_boundaries_by_contents(
+        ax,
         gdf_boundaries_regions,
-        gdf_points_units,
-        gdf_lines_transfer,
-        ax=ax,
-        map_extent=map_extent,
-        boundary_kwargs=lsoa_boundary_kwargs,
-        boundary_periphery_kwargs=lsoa_boundary_periphery_kwargs
+        kwargs_with_nowt=kwargs_region_with_nowt,
+        kwargs_with_periphery=kwargs_region_with_lsoa,
+        kwargs_with_unit=kwargs_region_with_unit,
+        )
+
+    # Set up markers using a new column in DataFrame.
+    # Set everything to the IVT marker:
+    markers = np.full(len(gdf_points_units), 'o')
+    # Update MT units:
+    col_use_mt = find_multiindex_column_names(
+        gdf_points_units, property=['use_mt'])
+    mask_mt = (gdf_points_units[col_use_mt] == 1)
+    markers[mask_mt] = '*'
+    # Store in the DataFrame:
+    gdf_points_units['marker'] = markers
+
+    # In selected regions:
+    col_selected = find_multiindex_column_names(
+        gdf_points_units, property=['selected'])
+    col_periphery_unit = find_multiindex_column_names(
+        gdf_points_units, property=['periphery_unit'])
+    mask = (gdf_points_units[col_selected] == 1)
+    ax, handles_scatter_us = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        facecolor='WhiteSmoke',
+        edgecolor='k',
+        return_handle=True
+        )
+    # Outside selected regions:
+    mask = (
+        (gdf_points_units[col_selected] == 0) &
+        (gdf_points_units[col_periphery_unit] == 1)
+    )
+    ax, handles_scatter_uns = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        facecolor='WhiteSmoke',
+        edgecolor='DimGray',
+        return_handle=True
+        )
+
+    # Label units:
+    # In selected regions:
+    mask = gdf_points_units[col_selected] == 1
+    col_geometry = find_multiindex_column_names(
+        gdf_points_units, property=['geometry'])
+    col_short_code = find_multiindex_column_names(
+        gdf_points_units, property=['short_code'])
+    col_stroke_team = find_multiindex_column_names(
+        gdf_points_units, property=['stroke_team'])
+    col_colour_lines = find_multiindex_column_names(
+        gdf_points_units, property=['colour_lines'])
+    ax, handles_us, labels_us = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        colours=gdf_points_units.loc[mask, col_colour_lines],
+        # color='k',
+        # bbox=dict(facecolor='WhiteSmoke', edgecolor='r'),
+    )
+    # Outside selected regions:
+    mask = (
+        (gdf_points_units[col_selected] == 0) &
+        (gdf_points_units[col_periphery_unit] == 1)
+    )
+    ax, handles_uns, labels_uns = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        color='DimGray',
+        # bbox=dict(facecolor='GhostWhite', edgecolor='DimGray'),
     )
 
-    if path_to_file is None:
+    # Units:
+    if len(labels_uns) > 0:
+        section_labels = ['Selected units' + ' ' * 70 + '.',
+                          'Periphery units']
+        handles_lists = [
+            [handles_scatter_us, handles_us],
+            [handles_scatter_uns, handles_uns]
+        ]
+        labels_lists = [labels_us, labels_uns]
+    else:
+        section_labels = ['Selected units' + ' ' * 70 + '.']
+        handles_lists = [
+            [handles_scatter_us, handles_us]
+        ]
+        labels_lists = [labels_us]
+
+    leg = create_units_legend(
+        ax,
+        handles_lists,
+        labels_lists,
+        section_labels,
+        fontsize=6,
+        bbox_to_anchor=[0.0, 1.0],
+        loc='upper right'
+        )
+
+    ax = plot_lines_between_units(
+        ax,
+        gdf_lines_transfer,
+        edgecolor='k'
+        )
+
+    if len(map_extent) > 0:
+        # Limit to given extent:
+        ax.set_xlim(map_extent[0], map_extent[1])
+        ax.set_ylim(map_extent[2], map_extent[3])
+    else:
+        # Use default axis limits.
         pass
-    else:
-        # Include extra artists so that bbox_inches='tight' line
-        # in savefig() doesn't cut off the legends.
-        # Adding legends with ax.add_artist() means that the
-        # bbox_inches='tight' line ignores them.
-        plt.savefig(
-            path_to_file,
-            bbox_extra_artists=extra_artists,
-            dpi=300, bbox_inches='tight')
-    if show:
-        # Add dummy axis to the sides so that
-        # extra_artists are not cut off when plt.show() crops.
-        fig = maps.plot_dummy_axis(fig, ax, extra_artists[0], side='left')
-        plt.show()
-    else:
-        plt.close()
+
+    ax.set_axis_off()  # Turn off axis line and numbers
+
+    extra_artists = (leg, )  # Has to be a tuple.
+
+    return ax, extra_artists
 
 
 def plot_map_outcome(
         gdf_boundaries_lsoa,
-        gdf_boundaries_regions,
+        gdf_boundaries_regions,  # TO DO - make this optional...?
         gdf_points_units,
-        scenario,
-        outcome,
-        title='',
-        lsoa_boundary_kwargs={},
+        ax=None,
         map_extent=[],
+        boundary_kwargs={},
         draw_region_boundaries=True,
-        show=True,
-        path_to_file=None
         ):
     """
-    Plot a map of LSOA outcomes.
-
-    +---+ +---------+ |     1 - Legend for units, selected / other.
-    | 1 | |    2    | | 3   2 - Map with regions, units, LSOA by outcome.
-    +---+ +---------+ |     3 - Colourbar for outcome.
+    Map the selected units, containing regions, and LSOA outcomes.
 
     Inputs
     ------
-    gdf_boundaries_catchment - GeoDataFrame.
-    gdf_boundaries_regions   - GeoDataFrame.
-    gdf_points_units         - GeoDataFrame.
-    scenario                 - str. Name of scenario to use.
-    outcome                  - str. Name of outcome to show.
-    title                    - str. Title of the axis.
-    lsoa_boundary_kwargs     - dict. Kwargs for plotting catchment areas.
-    map_extent               - list. Axis limits [xmin, xmax, ymin, ymax].
-    draw_region_boundaries   - bool. Whether to draw regions in background.
-    path_to_file             - str. Save the image here.
-    show                     - bool. Whether to plt.show().
+    gdf_boundaries_lsoa       - GeoDataFrame.
+    gdf_boundaries_regions    - GeoDataFrame.
+    gdf_points_units          - GeoDataFrame.
+    ax                        - plt.subplot().
+    map_extent                - list. Axis limits [xmin, xmax, ymin, ymax].
+    boundary_kwargs           - dict. Kwargs for plt.plot() for
+                                catchment areas.
+    draw_region_boundaries    - bool. Whether to draw background regions.
+
+    Returns
+    -------
+    ax            - plt.subplot(). Input ax with bits drawn on.
+    extra_artists - list. Extra legends drawn on with plt.add_artist().
     """
-    lsoa_boundary_kwargs = _setup_plot_map_outcome(
+    label_size_units = 15
+
+    if ax is None:
+        # Make max dimensions XxY inch:
+        fig, ax = plt.subplots(figsize=(10, 10))
+
+    # LSOAs:
+    # The column to use for colour selection is defined in
+    # boundary_kwargs which should be set up in another function.
+    ax = draw_boundaries(
+        ax,
         gdf_boundaries_lsoa,
-        scenario,
-        outcome,
-        boundary_kwargs=lsoa_boundary_kwargs,
+        **boundary_kwargs
         )
 
-    # Drop everything that belongs to other scenarios:
-    gdf_boundaries_regions = drop_other_scenarios(
-        gdf_boundaries_regions, scenario)
-    gdf_points_units = drop_other_scenarios(gdf_points_units, scenario)
-    gdf_boundaries_lsoa = drop_other_scenarios(gdf_boundaries_lsoa, scenario)
+    # Region boundaries:
+    kwargs_region_with_unit = {
+        'edgecolor': 'DimGray',
+        'linewidth': 0.5,
+        'facecolor': 'none'
+        }
+    kwargs_region_with_lsoa = {
+        'edgecolor': 'silver',
+        'linewidth': 0.5,
+        'facecolor': 'none'
+        }
+    kwargs_region_with_nowt = {
+        'edgecolor': 'none',
+        'facecolor': 'none'
+        }
 
-    # Make sure outcome column isn't string
-    # otherwise the choropleth will do one block colour instead
-    # of a colour scale by column value.
-    if is_numeric_dtype(gdf_boundaries_lsoa[lsoa_boundary_kwargs['column']]):
-        pass
-    else:
-        gdf_boundaries_lsoa = gdf_boundaries_lsoa.convert_dtypes()
-        # Then make sure it's the right type of NaN.
-        # Need numpy NaN instead of the pandas NA that appears with
-        # the convert_dtypes() line.
-        # gdf_boundaries_lsoa = gdf_boundaries_lsoa.replace(pd.NA, np.NaN)
+    if draw_region_boundaries:
+        ax = draw_boundaries_by_contents(
+            ax,
+            gdf_boundaries_regions,
+            kwargs_with_nowt=kwargs_region_with_nowt,
+            kwargs_with_periphery=kwargs_region_with_lsoa,
+            kwargs_with_unit=kwargs_region_with_unit,
+            )
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-    ax.set_title(title)
+    # Set up markers using a new column in DataFrame.
+    # Set everything to the IVT marker:
+    markers = np.full(len(gdf_points_units), 'o')
+    # Update MT units:
+    col_use_mt = find_multiindex_column_names(
+        gdf_points_units, property=['use_mt'])
+    mask_mt = (gdf_points_units[col_use_mt] == 1)
+    markers[mask_mt] = '*'
+    # Store in the DataFrame:
+    gdf_points_units['marker'] = markers
 
-    ax, extra_artists = maps.plot_map_outcome(
-        gdf_boundaries_lsoa,
-        gdf_boundaries_regions,
-        gdf_points_units,
-        ax=ax,
-        map_extent=map_extent,
-        boundary_kwargs=lsoa_boundary_kwargs,
-        draw_region_boundaries=draw_region_boundaries,
+    # In selected regions:
+    col_selected = find_multiindex_column_names(
+        gdf_points_units, property=['selected'])
+    mask = (gdf_points_units[col_selected] == 1)
+    ax, handles_scatter_us = scatter_units(
+        ax,
+        gdf_points_units[mask],
+        facecolor='WhiteSmoke',
+        edgecolor='k',
+        return_handle=True
+        )
+
+    # Label units:
+    # In selected regions:
+    mask = gdf_points_units[col_selected] == 1
+    col_geometry = find_multiindex_column_names(
+        gdf_points_units, property=['geometry'])
+    col_short_code = find_multiindex_column_names(
+        gdf_points_units, property=['short_code'])
+    col_stroke_team = find_multiindex_column_names(
+        gdf_points_units, property=['stroke_team'])
+    ax, handles_us, labels_us = draw_labels_short(
+        ax,
+        gdf_points_units.loc[mask, col_geometry],
+        gdf_points_units.loc[mask, col_short_code],
+        gdf_points_units.loc[mask, col_stroke_team],
+        s=label_size_units,
+        color='k',
+        # bbox=dict(facecolor='WhiteSmoke', edgecolor='r'),
     )
 
-    if path_to_file is None:
+    # Units:
+    section_labels = ['Stroke units' + ' ' * 70 + '.']
+    handles_lists = [[handles_scatter_us, handles_us]]
+    labels_lists = [labels_us]
+
+    leg = create_units_legend(
+        ax,
+        handles_lists,
+        labels_lists,
+        section_labels,
+        fontsize=6,
+        bbox_to_anchor=[0.0, 1.0],
+        loc='upper right'
+        )
+
+    if len(map_extent) > 0:
+        # Limit to given extent:
+        ax.set_xlim(map_extent[0], map_extent[1])
+        ax.set_ylim(map_extent[2], map_extent[3])
+    else:
+        # Use default axis limits.
         pass
-    else:
-        # Include extra artists so that bbox_inches='tight' line
-        # in savefig() doesn't cut off the legends.
-        # Adding legends with ax.add_artist() means that the
-        # bbox_inches='tight' line ignores them.
-        plt.savefig(
-            path_to_file,
-            bbox_extra_artists=extra_artists,
-            dpi=300, bbox_inches='tight'
-            )
-    if show:
-        # Add dummy axis to the sides so that
-        # extra_artists are not cut off when plt.show() crops.
-        fig = maps.plot_dummy_axis(fig, ax, extra_artists[0], side='left')
-        plt.show()
-    else:
-        plt.close()
+
+    ax.set_axis_off()  # Turn off axis line and numbers
+
+    extra_artists = (leg, )  # Has to be a tuple.
+
+    return ax, extra_artists

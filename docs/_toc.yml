@@ -1,0 +1,23 @@
+format: jb-book
+root: intro
+parts:
+- caption: ⭐ Essentials
+  chapters:
+  - file: 02_import_data
+  - file: 03a_stroke_units
+  - file: 03b_transfer_units
+  - file: 04a_lsoa_catchment
+- caption: 📚 Reference data creation
+  chapters:
+  - file: data_ref
+- caption: ⚡ Extras
+  chapters:
+  - file: 04b_island_lsoa_catchment
+- caption: 🌍 Plotting examples with matplotlib
+  chapters:
+  - file: 05_maps_value
+  - file: 06a_label_units
+  - file: 06b_periphery
+  - file: 06c_clip_and_inset
+  - file: 06d_colour_catchment
+

@@ -1,0 +1,37 @@
+# book settings
+title: Stroke maps
+author: Anna Laws
+#logo: images/logo.png
+
+#only build files specified in table of contents file
+only_build_toc_files: true
+
+execute:
+  execute_notebooks: 'off' #cache output from .ipynb files for faster build or use auto
+  timeout: -1 #no time restriction on notebook execution
+  
+launch_buttons:
+  notebook_interface        : classic  
+  binderhub_url             : ""
+  
+parse:
+  myst_enable_extensions:
+    # - amsmath
+    - colon_fence
+    # - deflist
+    - dollarmath
+    # - html_admonition
+    - html_image
+    - linkify
+    # - replacements
+    # - smartquotes
+    - substitution
+    - tasklist
+    
+html:
+  use_repository_button     : true  # Whether to add a link to your repository button
+  
+repository:
+  url                       : https://github.com/samuel-modelling/stroke-maps  # The URL to your book's repository
+  path_to_book              : "docs"  # A path to your book's folder, relative to the repository root.
+  branch                    : main  # Which branch of the repository should be used when creating links
