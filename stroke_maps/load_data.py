@@ -10,6 +10,21 @@ import geopandas as gpd
 from importlib_resources import files
 
 
+# ################################
+# ##### STROKE UNIT SERVICES #####
+# ################################
+
+def ni_stroke_unit_services():
+    """
+    Import data with Northern Irish units and ivt/mt services.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'hospitals.csv')
+    df = pd.read_csv(path_to_file, index_col='Postcode')
+    return df
+
+
 # #########################
 # ##### REGION LOOKUP #####
 # #########################
@@ -85,9 +100,37 @@ def travel_time_matrix_units():
     return df
 
 
-# #####################
-# ##### GEOGRAPHY #####
-# #####################
+def travel_time_matrix_ni_areas():
+    """
+    Import travel time matrix for Northern Ireland areas to units.
+
+    Each column is a postcode of a stroke team and
+    each row is a 2011 Small Area name (SA).
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'travel_matrix.csv')
+    df = pd.read_csv(path_to_file, index_col='from_postcode')
+    return df
+
+
+def travel_time_matrix_ni_units():
+    """
+    Import travel time matrix between Northern Ireland stroke units.
+
+    Each row index is a postcode of a stroke team and
+    each column name is a stroke team.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'inter_hospital_time.csv')
+    df = pd.read_csv(path_to_file, index_col='from_postcode')
+    return df
+
+
+# ############################
+# ##### UNIT COORDINATES #####
+# ############################
 
 def stroke_unit_coordinates():
     """
@@ -124,6 +167,45 @@ def stroke_unit_coordinates():
     return gdf_units
 
 
+def stroke_unit_coordinates_ni():
+    """
+    Import Northern Ireland stroke unit coordinates.
+
+    Index: postcode.
+    Columns: BNG_E, BNG_N, Longitude, Latitude.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'hospital_coords.csv')
+    df = pd.read_csv(path_to_file, index_col='Postcode')
+
+    # Convert lists of coordinates to geometry points.
+    # Use the Irish Grid coordinates:
+    x_col = 'easting'
+    y_col = 'northing'
+    # Which has this coordinates reference system by definition:
+    crs = 'EPSG:29902'
+    # And store the results in a column called 'geometry':
+    coords_col = 'geometry'
+
+    # Pick out lists of the coordinates:
+    # Extra .values.reshape are to remove the column headings.
+    x = df[x_col].values.reshape(len(df))
+    y = df[y_col].values.reshape(len(df))
+
+    # Convert each pair of coordinates to a Point(x, y).
+    df[coords_col] = gpd.points_from_xy(x, y)
+
+    # Convert to GeoDataFrame:
+    gdf_units = gpd.GeoDataFrame(df, geometry=coords_col, crs=crs)
+
+    return gdf_units
+
+
+# ############################
+# ##### COUNTRY OUTLINES #####
+# ############################
+
 def england_outline():
     """
     Import England boundaries in British National Grid crs.
@@ -157,6 +239,23 @@ def englandwales_outline():
     return gdf
 
 
+def ni_outline():
+    """
+    Import Northern Irish boundaries in Irish Grid crs.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'OSNI_Open_Data_-_50K_Boundaries_-_NI_Outline.geojson')
+    gdf = gpd.read_file(path_to_file)
+
+    # Convert to Irish grid coordinate system:
+    gdf = gdf.to_crs('EPSG:29902')
+    return gdf
+
+
+# #########################
+# ##### AREA OUTLINES #####
+# #########################
 def lsoa_geography():
     """
     Import LSOA boundaries.
@@ -197,5 +296,30 @@ def isdn_geography():
     # Relative import from package files:
     path_to_file = files('stroke_maps').joinpath('data').joinpath(
         'outline_isdn.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
+
+
+def ni_sa_geography():
+    """
+    Import Northern Irish Small Area (SA) boundaries.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'sa2011.json')
+    gdf = gpd.read_file(path_to_file)
+    # This file doesn't automatically set the right coordinate
+    # reference system of EPSG:29902 (Irish Grid) so force it now:
+    gdf = gdf.set_crs('EPSG:29902', allow_override=True)
+    return gdf
+
+
+def ni_county_geography():
+    """
+    Import Northern Irish county boundaries.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data_ni').joinpath(
+        'OSNI_Open_Data_-_50K_Boundaries_-_NI_Counties.geojson')
     gdf = gpd.read_file(path_to_file)
     return gdf

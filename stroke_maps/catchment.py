@@ -39,6 +39,7 @@ def calculate_transfer_units(
         df_stroke_teams,
         ivt_hospital_names=[],
         mt_hospital_names=[],
+        use_northern_ireland=False
         ):
     """
     Find wheel-and-spoke IVT feeder units to each MT unit.
@@ -60,6 +61,7 @@ def calculate_transfer_units(
                     postcode and travel time.
     """
     df_stroke_teams = df_stroke_teams.copy()
+    postcode_col = df_stroke_teams.index.name
     df_stroke_teams = df_stroke_teams.reset_index()
 
     if len(ivt_hospital_names) > 0:
@@ -67,27 +69,36 @@ def calculate_transfer_units(
     else:
         # Pick out the names of hospitals offering IVT:
         mask_ivt = (df_stroke_teams['use_ivt'] == 1)
-        ivt_hospital_names = df_stroke_teams['postcode'][mask_ivt].values
+        ivt_hospital_names = df_stroke_teams[postcode_col][mask_ivt].values
 
     if len(mt_hospital_names) > 0:
         pass
     else:
         # Pick out the names of hospitals offering MT:
         mask_mt = (df_stroke_teams['use_mt'] == 1)
-        mt_hospital_names = df_stroke_teams['postcode'][mask_mt].values
+        mt_hospital_names = df_stroke_teams[postcode_col][mask_mt].values
 
+    # If there's no column for overriding the closest transfer unit,
+    # create one now with the default value:
+    try:
+        df_stroke_teams['transfer_unit_postcode']
+    except KeyError:
+        df_stroke_teams['transfer_unit_postcode'] = 'nearest'
 
     # For units that don't offer IVT, set a placeholder value.
     # Don't calculate the transfer units for these.
     # Later the placeholder will be changed to pd.NA.
-    mask = df_stroke_teams['postcode'].isin(ivt_hospital_names)
+    mask = df_stroke_teams[postcode_col].isin(ivt_hospital_names)
     df_stroke_teams.loc[~mask, 'transfer_unit_postcode'] = 'none'
 
     # Firstly, determine MT feeder units based on travel time.
     # Each stroke unit will be assigned the MT unit that it is
     # closest to in travel time.
     # Travel time matrix between hospitals:
-    df_time_inter_hospital = load_data.travel_time_matrix_units()
+    if use_northern_ireland:
+        df_time_inter_hospital = load_data.travel_time_matrix_ni_units()
+    else:
+        df_time_inter_hospital = load_data.travel_time_matrix_units()
     # Reduce columns of inter-hospital time matrix to just MT hospitals:
     df_time_inter_hospital = df_time_inter_hospital[mt_hospital_names]
 
@@ -105,17 +116,17 @@ def calculate_transfer_units(
     # in the travel time matrix, then these will be added in now.
     df_nearest_mt = df_nearest_mt.reset_index()
     df_nearest_mt = df_nearest_mt.rename(
-        columns={'from_postcode': 'postcode'})
+        columns={'from_postcode': postcode_col})
     df_nearest_mt = pd.merge(
-        df_nearest_mt, df_stroke_teams['postcode'],
-        on='postcode', how='right')
-    df_nearest_mt = df_nearest_mt.set_index('postcode')
+        df_nearest_mt, df_stroke_teams[postcode_col],
+        on=postcode_col, how='right')
+    df_nearest_mt = df_nearest_mt.set_index(postcode_col)
 
     # Update the feeder units list with anything specified
     # by the user.
     df_services_to_update = df_stroke_teams[
         df_stroke_teams['transfer_unit_postcode'] != 'nearest']
-    units_to_update = df_services_to_update['postcode'].values
+    units_to_update = df_services_to_update[postcode_col].values
     transfer_units_to_update = df_services_to_update[
         'transfer_unit_postcode'].values
     for u, unit in enumerate(units_to_update):

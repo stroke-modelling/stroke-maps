@@ -14,7 +14,7 @@ from shapely import LineString  # For creating line geometry.
 import stroke_maps.load_data
 
 
-def make_geometry_transfer_units(df_transfer):
+def make_geometry_transfer_units(df_transfer, use_northern_ireland=False):
     """
     Create GeoDataFrames of new geometry and existing DataFrames.
 
@@ -30,12 +30,22 @@ def make_geometry_transfer_units(df_transfer):
     gdf_transfer - GeoDataFrame. Unit info and geometry.
     """
     # Load in the stroke unit coordinates:
-    gdf_units = stroke_maps.load_data.stroke_unit_coordinates()
+    if use_northern_ireland:
+        gdf_units = stroke_maps.load_data.stroke_unit_coordinates_ni()
+        easting_col = 'easting'
+        northing_col = 'northing'
+    else:
+        gdf_units = stroke_maps.load_data.stroke_unit_coordinates()
+        easting_col = 'BNG_E'
+        northing_col = 'BNG_N'
+
+    # Pick out the column name for postcodes:
+    postcode_col = df_transfer.index.name
 
     # Make dataframe of just the starting units and their coordinates:
     gdf_start_units = pd.merge(
         pd.Series(df_transfer.index), gdf_units,
-        left_on='postcode', right_index=True, how='left'
+        left_on=postcode_col, right_index=True, how='left'
     )
 
     # Make dataframe of just the end units and their coordinates:
@@ -53,20 +63,22 @@ def make_geometry_transfer_units(df_transfer):
     df_transfer_coords = df_transfer.reset_index().copy()
     # Merge in the start unit coordinates:
     df_transfer_coords = pd.merge(
-        df_transfer_coords, gdf_start_units[['postcode', 'BNG_E', 'BNG_N']],
-        on='postcode', how='left'
+        df_transfer_coords,
+        gdf_start_units[[postcode_col, easting_col, northing_col]],
+        on=postcode_col, how='left'
     )
     # Merge in the end unit coordinates:
     df_transfer_coords = pd.merge(
         df_transfer_coords,
-        gdf_end_units[['transfer_unit_postcode', 'BNG_E', 'BNG_N']],
+        gdf_end_units[['transfer_unit_postcode', easting_col, northing_col]],
         on='transfer_unit_postcode', how='left', suffixes=[None, '_transfer']
     )
 
     # Make a column of coordinates [x, y]:
-    xy = df_transfer_coords[['BNG_E', 'BNG_N']]
+    xy = df_transfer_coords[[easting_col, northing_col]]
     df_transfer_coords['coords_start'] = xy.values.tolist()
-    xy_mt = df_transfer_coords[['BNG_E_transfer', 'BNG_N_transfer']]
+    xy_mt = df_transfer_coords[[f'{easting_col}_transfer',
+                                f'{northing_col}_transfer']]
     df_transfer_coords['coords_end'] = xy_mt.values.tolist()
 
     # Convert to geometry (line).
