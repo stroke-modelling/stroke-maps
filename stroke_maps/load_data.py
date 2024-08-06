@@ -68,6 +68,50 @@ def region_lookup():
     return df
 
 
+def ambulance_lsoa_lookup():
+    """
+    Import data linking LSOA to ambulance service catchment areas.
+
+    The index is LSOA code. The columns are LSOA name, ambulance
+    catchment in 2021, and ambulance catchment in 2022.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'lsoa_ambo_lookup.csv')
+    df = pd.read_csv(path_to_file, index_col='LSOA11CD')
+    return df
+
+
+def ambulance_ccg15_lookup():
+    """
+    Import data linking CCG in 2015 to ambulance service.
+
+    The index is CCG 2015 name and the column is ambulance
+    catchment in 2021.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'ccg15_amb.csv')
+    df = pd.read_csv(path_to_file, index_col='ccg15nm').squeeze()
+    # squeeze() to convert from dataframe to series.
+    return df
+
+
+def ambulance_name_lookup():
+    """
+    Import data linking ambulance service codes with names.
+
+    The index is ambulance code used in the other ambo files here
+    and the column is the fuller name of the service.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'ambulance_service_names.csv')
+    df = pd.read_csv(path_to_file, index_col='ambulance_service').squeeze()
+    # squeeze() to convert from dataframe to series.
+    return df
+
+
 # ########################
 # ##### TRAVEL TIMES #####
 # ########################
@@ -296,6 +340,28 @@ def isdn_geography():
     # Relative import from package files:
     path_to_file = files('stroke_maps').joinpath('data').joinpath(
         'outline_isdn.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
+
+
+def ambulance21_geography():
+    """
+    Import ambulance service 2021 boundaries for England and Wales.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'ambulance_catchment_2021.geojson')
+    gdf = gpd.read_file(path_to_file)
+    return gdf
+
+
+def ambulance22_geography():
+    """
+    Import ambulance service 2022 boundaries for England and Wales.
+    """
+    # Relative import from package files:
+    path_to_file = files('stroke_maps').joinpath('data').joinpath(
+        'ambulance_catchment_2022.geojson')
     gdf = gpd.read_file(path_to_file)
     return gdf
 
