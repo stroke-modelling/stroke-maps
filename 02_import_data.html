@@ -418,9 +418,12 @@ document.write(`
 <h2>1. Region lookup<a class="headerlink" href="#region-lookup" title="Permalink to this heading">#</a></h2>
 <p>The files available are:</p>
 <ul class="simple">
-<li><p>stroke units to containing regions</p></li>
-<li><p>LSOA to SICBL/LHB</p></li>
-<li><p>SICBL/LHB to larger regions</p></li>
+<li><p>stroke units to containing regions (England and Wales)</p></li>
+<li><p>LSOA to SICBL (England) and LHB (Wales)</p></li>
+<li><p>SICBL (England) and LHB (Wales) to larger regions</p></li>
+<li><p>LSOA to ambulance service catchment areas (England and Wales)</p></li>
+<li><p>CCG 2015 to ambulance service catchment areas (England)</p></li>
+<li><p>Ambulance service codes to names (England and Wales)</p></li>
 </ul>
 <p><strong>Stroke unit to region lookup:</strong></p>
 <div class="cell docutils container">
@@ -704,6 +707,106 @@ document.write(`
   </tbody>
 </table>
 </div></div></div>
+</div>
+<p><strong>LSOA to ambulance service lookup:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_lsoa_ambo</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ambulance_lsoa_lookup</span><span class="p">()</span>
+
+<span class="n">df_lsoa_ambo</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>LSOA11NM</th>
+      <th>ambo21</th>
+      <th>ambo22</th>
+    </tr>
+    <tr>
+      <th>LSOA11CD</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>E01031349</th>
+      <td>Adur 001A</td>
+      <td>SECAmb</td>
+      <td>SECAmb</td>
+    </tr>
+    <tr>
+      <th>E01031350</th>
+      <td>Adur 001B</td>
+      <td>SECAmb</td>
+      <td>SECAmb</td>
+    </tr>
+    <tr>
+      <th>E01031351</th>
+      <td>Adur 001C</td>
+      <td>SECAmb</td>
+      <td>SECAmb</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>CCG 2015 to ambulance service lookup:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_ccg15_ambo</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ambulance_ccg15_lookup</span><span class="p">()</span>
+
+<span class="n">df_ccg15_ambo</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ccg15nm
+NHS Airedale, Wharfedale and Craven CCG       YAS
+NHS Ashford CCG                            SECAmb
+NHS Aylesbury Vale CCG                       SCAS
+Name: ambo21, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Ambulance service code to name lookup:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_ambo_names</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ambulance_name_lookup</span><span class="p">()</span>
+
+<span class="n">df_ambo_names</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ambulance_service
+EMAS       East Midlands
+EEAST    East of England
+IWAS       Isle of Wight
+Name: ambulance_service_name, dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="stroke-unit-services">
@@ -1171,6 +1274,7 @@ document.write(`
 <li><p>Sub-Integrated Care Board Locations (SICBL) for England</p></li>
 <li><p>Local Health Boards (LHB) for Wales</p></li>
 <li><p>Integrated Stroke Delivery Networks (ISDN) for England</p></li>
+<li><p>Ambulance catchment areas for England and Wales</p></li>
 <li><p>Small Areas (SA) for Northern Ireland</p></li>
 <li><p>Counties for Northern Ireland</p></li>
 <li><p>Country outlines for:</p>
@@ -1796,6 +1900,131 @@ document.write(`
 <img alt="_images/ac3b59798ad10d6c6d15f9612b24d2987a70d3b5439484a258bd127884d19059.png" src="_images/ac3b59798ad10d6c6d15f9612b24d2987a70d3b5439484a258bd127884d19059.png" />
 </div>
 </div>
+<p><strong>Ambulance service (England and Wales) boundaries:</strong></p>
+<p>2021 data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_ambo21</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ambulance21_geography</span><span class="p">()</span>
+
+<span class="n">gdf_ambo21</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ambo21</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>EEAST</td>
+      <td>MULTIPOLYGON (((504078.594 192959.141, 504011....</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>EMAS</td>
+      <td>MULTIPOLYGON (((433452.973 296575.368, 432482....</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>IWAS</td>
+      <td>MULTIPOLYGON (((450897.496 75508.595, 450613.3...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>2022 data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_ambo22</span> <span class="o">=</span> <span class="n">stroke_maps</span><span class="o">.</span><span class="n">load_data</span><span class="o">.</span><span class="n">ambulance22_geography</span><span class="p">()</span>
+
+<span class="n">gdf_ambo22</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ambo22</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>EEAST</td>
+      <td>MULTIPOLYGON (((504078.594 192959.141, 504011....</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>EMAS</td>
+      <td>MULTIPOLYGON (((427187.406 311340.906, 427226....</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>IWAS</td>
+      <td>MULTIPOLYGON (((450897.496 75508.595, 450613.3...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_boundaries</span><span class="p">(</span><span class="n">gdf_ambo21</span><span class="p">,</span> <span class="s1">&#39;Ambulance boundaries in 2021&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4cea3f53cb528f83677462a90e2b9226661b3718ed5ef8822a6b47037c0ae9bf.png" src="_images/4cea3f53cb528f83677462a90e2b9226661b3718ed5ef8822a6b47037c0ae9bf.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_boundaries</span><span class="p">(</span><span class="n">gdf_ambo22</span><span class="p">,</span> <span class="s1">&#39;Ambulance boundaries in 2022&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/95f5258a48468511a7f41b1a3385d466b914863192ad9a4768f3d29fd2f2660f.png" src="_images/95f5258a48468511a7f41b1a3385d466b914863192ad9a4768f3d29fd2f2660f.png" />
+</div>
+</div>
 <p><strong>Small Area (SA) (Northern Ireland) boundaries:</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1886,9 +2115,9 @@ document.write(`
     </tr>
     <tr>
       <th>geometry</th>
-      <td>POLYGON ((315481.125 376464.2188000008, 315472...</td>
-      <td>POLYGON ((307740.8125 382573.2188000008, 30776...</td>
-      <td>POLYGON ((311363.3125 385217.625, 311600 38517...</td>
+      <td>POLYGON ((315481.125 376464.2188000008, 315524...</td>
+      <td>POLYGON ((307740.8125 382573.2188000008, 30407...</td>
+      <td>POLYGON ((311363.3125 385217.625, 311325.09379...</td>
     </tr>
   </tbody>
 </table>
@@ -1901,7 +2130,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6e3f25b7a89b2eeb7f4b6823dfcc381a7c171720b26d7a05a8f1efeebbff521c.png" src="_images/6e3f25b7a89b2eeb7f4b6823dfcc381a7c171720b26d7a05a8f1efeebbff521c.png" />
+<img alt="_images/92d3416ecf5420444033081449fa768e9be597fa56d83a0e0046d0765133070a.png" src="_images/92d3416ecf5420444033081449fa768e9be597fa56d83a0e0046d0765133070a.png" />
 </div>
 </div>
 <p><strong>County (Northern Ireland) boundaries:</strong></p>
