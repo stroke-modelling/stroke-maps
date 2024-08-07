@@ -1,0 +1,114 @@
+region,region_code,region_type,short_code
+Aneurin Bevan University Health Board,W11000028,LHB,AB
+Betsi Cadwaladr University Health Board,W11000023,LHB,BC
+Cardiff and Vale University Health Board,W11000029,LHB,CV
+Cwm Taf Morgannwg University Health Board,W11000030,LHB,CT
+Hywel Dda University Health Board,W11000025,LHB,HD
+"NHS Bath and North East Somerset, Swindon and Wiltshire ICB - 92G",E38000231,SICBL,BA
+"NHS Bedfordshire, Luton and Milton Keynes ICB - M1J4Y",E38000249,SICBL,BD
+NHS Birmingham and Solihull ICB - 15E,E38000258,SICBL,BS
+NHS Black Country ICB - D2P2L,E38000259,SICBL,BL
+"NHS Bristol, North Somerset and South Gloucestershire ICB - 15C",E38000222,SICBL,BR
+"NHS Buckinghamshire, Oxfordshire and Berkshire West ICB - 10Q",E38000136,SICBL,BO1
+"NHS Buckinghamshire, Oxfordshire and Berkshire West ICB - 14Y",E38000223,SICBL,BO2
+"NHS Buckinghamshire, Oxfordshire and Berkshire West ICB - 15A",E38000221,SICBL,BO3
+NHS Cambridgeshire and Peterborough ICB - 06H,E38000260,SICBL,CP
+NHS Cheshire and Merseyside ICB - 01F,E38000068,SICBL,CM1
+NHS Cheshire and Merseyside ICB - 01J,E38000091,SICBL,CM2
+NHS Cheshire and Merseyside ICB - 01T,E38000161,SICBL,CM3
+NHS Cheshire and Merseyside ICB - 01V,E38000170,SICBL,CM4
+NHS Cheshire and Merseyside ICB - 01X,E38000172,SICBL,CM5
+NHS Cheshire and Merseyside ICB - 02E,E38000194,SICBL,CM6
+NHS Cheshire and Merseyside ICB - 12F,E38000208,SICBL,CM7
+NHS Cheshire and Merseyside ICB - 27D,E38000233,SICBL,CM8
+NHS Cheshire and Merseyside ICB - 99A,E38000101,SICBL,CM9
+NHS Cornwall and the Isles of Scilly ICB - 11N,E38000089,SICBL,CS
+NHS Coventry and Warwickshire ICB - B2M3M,E38000251,SICBL,CW
+NHS Derby and Derbyshire ICB - 15M,E38000261,SICBL,DD
+NHS Devon ICB - 15N,E38000230,SICBL,DV
+NHS Dorset ICB - 11J,E38000045,SICBL,DO
+NHS Frimley ICB - D4U1Y,E38000252,SICBL,FR
+NHS Gloucestershire ICB - 11M,E38000062,SICBL,GL
+NHS Greater Manchester ICB - 00T,E38000016,SICBL,GM1
+NHS Greater Manchester ICB - 00V,E38000024,SICBL,GM2
+NHS Greater Manchester ICB - 00Y,E38000135,SICBL,GM3
+NHS Greater Manchester ICB - 01D,E38000080,SICBL,GM4
+NHS Greater Manchester ICB - 01G,E38000143,SICBL,GM5
+NHS Greater Manchester ICB - 01W,E38000174,SICBL,GM6
+NHS Greater Manchester ICB - 01Y,E38000263,SICBL,GM7
+NHS Greater Manchester ICB - 02A,E38000187,SICBL,GM8
+NHS Greater Manchester ICB - 02H,E38000205,SICBL,GM9
+NHS Greater Manchester ICB - 14L,E38000217,SICBL,GM0
+NHS Hampshire and Isle of Wight ICB - 10R,E38000137,SICBL,HI1
+NHS Hampshire and Isle of Wight ICB - D9Y0V,E38000253,SICBL,HI2
+NHS Herefordshire and Worcestershire ICB - 18C,E38000236,SICBL,HW
+NHS Hertfordshire and West Essex ICB - 06K,E38000049,SICBL,HE1
+NHS Hertfordshire and West Essex ICB - 06N,E38000079,SICBL,HE2
+NHS Hertfordshire and West Essex ICB - 07H,E38000197,SICBL,HE3
+NHS Humber and North Yorkshire ICB - 02Y,E38000052,SICBL,HY1
+NHS Humber and North Yorkshire ICB - 03F,E38000085,SICBL,HY2
+NHS Humber and North Yorkshire ICB - 03H,E38000119,SICBL,HY3
+NHS Humber and North Yorkshire ICB - 03K,E38000122,SICBL,HY4
+NHS Humber and North Yorkshire ICB - 03Q,E38000188,SICBL,HY5
+NHS Humber and North Yorkshire ICB - 42D,E38000241,SICBL,HY6
+NHS Kent and Medway ICB - 91Q,E38000237,SICBL,KM
+NHS Lancashire and South Cumbria ICB - 00Q,E38000014,SICBL,LC1
+NHS Lancashire and South Cumbria ICB - 00R,E38000015,SICBL,LC2
+NHS Lancashire and South Cumbria ICB - 00X,E38000034,SICBL,LC3
+NHS Lancashire and South Cumbria ICB - 01A,E38000050,SICBL,LC4
+NHS Lancashire and South Cumbria ICB - 01E,E38000227,SICBL,LC5
+NHS Lancashire and South Cumbria ICB - 01K,E38000228,SICBL,LC6
+NHS Lancashire and South Cumbria ICB - 02G,E38000200,SICBL,LC7
+NHS Lancashire and South Cumbria ICB - 02M,E38000226,SICBL,LC8
+"NHS Leicester, Leicestershire and Rutland ICB - 03W",E38000051,SICBL,LE1
+"NHS Leicester, Leicestershire and Rutland ICB - 04C",E38000097,SICBL,LE2
+"NHS Leicester, Leicestershire and Rutland ICB - 04V",E38000201,SICBL,LE3
+NHS Lincolnshire ICB - 71E,E38000238,SICBL,LI
+NHS Mid and South Essex ICB - 06Q,E38000106,SICBL,EX1
+NHS Mid and South Essex ICB - 07G,E38000185,SICBL,EX2
+NHS Mid and South Essex ICB - 99E,E38000007,SICBL,EX3
+NHS Mid and South Essex ICB - 99F,E38000030,SICBL,EX4
+NHS Mid and South Essex ICB - 99G,E38000168,SICBL,EX5
+NHS Norfolk and Waveney ICB - 26A,E38000239,SICBL,NF
+NHS North Central London ICB - 93C,E38000240,SICBL,NCL
+NHS North East and North Cumbria ICB - 00L,E38000130,SICBL,CU1
+NHS North East and North Cumbria ICB - 00N,E38000163,SICBL,CU2
+NHS North East and North Cumbria ICB - 00P,E38000176,SICBL,CU3
+NHS North East and North Cumbria ICB - 01H,E38000215,SICBL,CU4
+NHS North East and North Cumbria ICB - 13T,E38000212,SICBL,CU5
+NHS North East and North Cumbria ICB - 16C,E38000247,SICBL,CU6
+NHS North East and North Cumbria ICB - 84H,E38000234,SICBL,CU7
+NHS North East and North Cumbria ICB - 99C,E38000127,SICBL,CU8
+NHS North East London ICB - A3A8R,E38000255,SICBL,NEL
+NHS North West London ICB - W2U3Z,E38000256,SICBL,NWL
+NHS Northamptonshire ICB - 78H,E38000262,SICBL,NT
+NHS Nottingham and Nottinghamshire ICB - 02Q,E38000008,SICBL,NO1
+NHS Nottingham and Nottinghamshire ICB - 52R,E38000243,SICBL,NO2
+"NHS Shropshire, Telford and Wrekin ICB - M2L0M",E38000257,SICBL,SH
+NHS Somerset ICB - 11X,E38000150,SICBL,SO
+NHS South East London ICB - 72Q,E38000244,SICBL,SEL
+NHS South West London ICB - 36L,E38000245,SICBL,SWL
+NHS South Yorkshire ICB - 02P,E38000006,SICBL,SY1
+NHS South Yorkshire ICB - 02X,E38000044,SICBL,SY2
+NHS South Yorkshire ICB - 03L,E38000141,SICBL,SY3
+NHS South Yorkshire ICB - 03N,E38000146,SICBL,SY4
+NHS Staffordshire and Stoke-on-Trent ICB - 04Y,E38000028,SICBL,ST1
+NHS Staffordshire and Stoke-on-Trent ICB - 05D,E38000053,SICBL,ST2
+NHS Staffordshire and Stoke-on-Trent ICB - 05G,E38000126,SICBL,ST3
+NHS Staffordshire and Stoke-on-Trent ICB - 05Q,E38000153,SICBL,ST4
+NHS Staffordshire and Stoke-on-Trent ICB - 05V,E38000173,SICBL,ST5
+NHS Staffordshire and Stoke-on-Trent ICB - 05W,E38000175,SICBL,ST6
+NHS Suffolk and North East Essex ICB - 06L,E38000086,SICBL,SE1
+NHS Suffolk and North East Essex ICB - 06T,E38000117,SICBL,SE2
+NHS Suffolk and North East Essex ICB - 07K,E38000204,SICBL,SE3
+NHS Surrey Heartlands ICB - 92A,E38000246,SICBL,SU
+NHS Sussex ICB - 09D,E38000021,SICBL,SX1
+NHS Sussex ICB - 70F,E38000248,SICBL,SX2
+NHS Sussex ICB - 97R,E38000235,SICBL,SX3
+NHS West Yorkshire ICB - 02T,E38000025,SICBL,WY1
+NHS West Yorkshire ICB - 03R,E38000190,SICBL,WY2
+NHS West Yorkshire ICB - 15F,E38000225,SICBL,WY3
+NHS West Yorkshire ICB - 36J,E38000232,SICBL,WY4
+NHS West Yorkshire ICB - X2C4Y,E38000254,SICBL,WY5
+Powys Teaching Health Board,W11000024,LHB,PT
+Swansea Bay University Health Board,W11000031,LHB,SW
