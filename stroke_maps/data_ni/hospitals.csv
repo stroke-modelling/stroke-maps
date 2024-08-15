@@ -1,7 +1,7 @@
 Postcode,Hospital_name,City,door_to_needle,Fixed,use_ivt,use_mt
 BT126BA,Royal Victoria,Belfast,43,2,1,1
 BT161RH,Ulster,Belfast,50,,1,0
-BT358DR,Daisy Hill,Newry,38,,0,0
+BT358DR,Daisy Hill,Newry,38,,1,0
 BT412RL,Antrim Area,Antrim,59,,1,0
 BT476SB,Altnagelvin,Londonderry,68,,1,0
 BT521HS,Causeway,Coleraine,45,,1,0
